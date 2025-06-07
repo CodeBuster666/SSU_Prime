@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ssu_prime/views/login_page.dart';
 import '../views/review_modules_page.dart';
 import 'drawer_tile.dart';
 

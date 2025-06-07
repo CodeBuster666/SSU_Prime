@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController ConfirmPasswordController = TextEditingController();
 
   // Register button tapped
-  void register() async{
+  void Register() async{
     // Password match -> create account
     if(PasswordController.text == ConfirmPasswordController.text){
       // Show Loading Circle
@@ -100,131 +100,142 @@ class _RegisterPageState extends State<RegisterPage> {
 
 
 
+
   Padding buildPadding(BuildContext context) {
     return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        padding: const EdgeInsets.symmetric(horizontal: 25.0),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 5),
+              // Logo
+              Icon(
+                Icons.school,
+                size: 100,
+                color: Theme
+                    .of(context)
+                    .colorScheme
+                    .primary,
+              ),
 
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 5),
-                  // Logo
-                  Icon(
-                    Icons.school,
-                    size: 100,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-
-                  /*
-                  Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(
+              /*
+                 Container(
+                     width: 200,
+                     height: 200,
+                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/images/Logo.png"),
                         fit: BoxFit.cover, // Adjust as needed
-                      ),
-                    ),
-                  ),
-                  */
+                       ),
+                     ),
+                   ),
+              */
+
+              const SizedBox(height: 10),
+
+              // Create Account Message
+              Text(
+                "Let's Sign Up!",
+                style: TextStyle(
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .primary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // School Text field
+              MyTextfield(
+                controller: SchoolIdController,
+                hintText: "Enter School ID",
+                obscureText: false,
+              ),
 
 
+              const SizedBox(height: 10),
 
-                  const SizedBox(height: 10),
+              // Email Text field
+              MyTextfield(
+                controller: EmailController,
+                hintText: "Enter Email",
+                obscureText: false,
+              ),
 
-                  // Create Account Message
+              const SizedBox(height: 10),
+
+              // Password Text field
+              MyTextfield(
+                controller: PasswordController,
+                hintText: "Enter Password",
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 10),
+
+              // Confirm New Password Text field
+              MyTextfield(
+                controller: ConfirmPasswordController,
+                hintText: "Confirm New Password",
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 20),
+
+              // Sign In Button
+              MyButton(
+                text: "Register",
+                onTap: Register,
+              ),
+
+              const SizedBox(height: 20),
+
+              // Already a member? Sign In
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Text(
-                    "Let's Sign Up!",
+                    "Already a member?",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w600,
+                      color: Theme
+                          .of(context)
+                          .hintColor,
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                  const SizedBox(width: 4),
 
-                  // School Text field
-                  MyTextfield(
-                    controller: SchoolIdController,
-                    hintText: "Enter School ID",
-                    obscureText: false,
-                  ),
-
-
-                  const SizedBox(height: 10),
-
-                  // Email Text field
-                  MyTextfield(
-                    controller: EmailController,
-                    hintText: "Enter Email",
-                    obscureText: false,
-                  ),
-
-
-                  const SizedBox(height: 10),
-
-                  // Password Text field
-                  MyTextfield(
-                    controller: PasswordController,
-                    hintText: "Enter Password",
-                    obscureText: true,
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // Confirm New Password Text field
-                  MyTextfield(
-                    controller: ConfirmPasswordController,
-                    hintText: "Confirm New Password",
-                    obscureText: true,
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Sign In Button
-                  MyButton(
-                    text: "Register",
-                    onTap: register,
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Already a member? Sign In
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already a member?",
-                        style: TextStyle(
-                          color: Theme.of(context).hintColor,
+                  // User can tap this to go to the login page
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>
+                            LoginPage(onTap: widget.onTap),
                         ),
-                      ),
+                      );
+                    },
 
-                      const SizedBox(width: 4),
-
-                      // User can tap this to go to the login page
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => LoginPage(onTap: widget.onTap)),
-                          );
-                        },
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(
-                            color: Theme.of(context).hintColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                    // User can tap this to go to the login page
+                    child: Text(
+                      "Sign In",
+                      style: TextStyle(
+                        color: Theme
+                            .of(context)
+                            .hintColor,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
+            ],
+          ),
+        ),
 
     );
   }
