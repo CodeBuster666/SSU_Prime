@@ -25,7 +25,10 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Theme
+          .of(context)
+          .colorScheme
+          .surface,
 
       body: Row(
         children: [
@@ -61,7 +64,10 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
         children: [
           Text(
             'SSU Prime Header',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme
+                .of(context)
+                .textTheme
+                .titleLarge,
           ),
 
           Container(
@@ -80,39 +86,64 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
     return Expanded(
       child: Column(
         children: [
-
-          // Tiles below
-          Padding(padding: const EdgeInsets.all(8.0)),
-          Expanded(
-            child: ListView.builder(itemCount: 1, // Items for the tiles.
-              itemBuilder: (context, index) {
-              return const MyTile();
-              },
-            ),
+          // Tiles at the top
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const MyTile(), // Ensure MyTile is displayed at the top
           ),
 
-          // Boxes on the top
-          buildAspectRatio(),
+          // Boxes below the tile
+          Expanded(
+            child: buildDashboardCards(), // Call buildAspectRatio here
+          ),
         ],
       ),
     );
   }
 
+  Widget buildDashboardCards() {
+    final List<Widget> boxes = [
+      const MyBox(
+        icon: Icons.menu_book_outlined,
+        label: "Current Module",
+        title: "Educational Psychology",
+        subText: "Progress: 75%",
+        buttonText: "Resume Module",
+        boxColor: Colors.blueAccent,
+      ),
+      const MyBox(
+        icon: Icons.description_outlined,
+        label: "Mock Test",
+        title: "Practice Test #4",
+        subText: "Duration: 2 hours",
+        buttonText: "Start Test",
+        boxColor: Colors.green,
+      ),
+      const MyBox(
+        icon: Icons.emoji_events_outlined,
+        label: "Your Rank",
+        title: "#3 This Week",
+        subText: "Score: 92/100",
+        buttonText: "View Leaderboard",
+        boxColor: Colors.orange,
+      ),
+      const MyBox(
+        icon: Icons.calendar_today_outlined,
+        label: "Next Session",
+        title: "Child Development",
+        subText: "Today, 2:00 PM",
+        buttonText: "Join Session",
+        boxColor: Colors.purple,
+      ),
+    ];
 
-  AspectRatio buildAspectRatio() {
-    return AspectRatio(
-        aspectRatio: 3,
-        child: SizedBox(
-          width: double.infinity,
-          child: GridView.builder(
-              itemCount: 4, // items for the boxes.
-              gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
-              itemBuilder: (context, index) {
-              return const MyBox();
-              },
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      child: Wrap(
+        spacing: 20,
+        runSpacing: 20,
+        children: boxes,
+      ),
     );
   }
 }
