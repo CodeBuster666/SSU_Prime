@@ -14,14 +14,13 @@ void main() async {
 
   // Run App
   runApp(
-  MultiProvider(
-    providers: [
-      // Theme Provider
-      ChangeNotifierProvider(create: (_) => ThemeProvider(),
-      ),
-    ],
-    child: const MyApp(),
+
+    // Theme Provider
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
     ),
+
   );
 }
 

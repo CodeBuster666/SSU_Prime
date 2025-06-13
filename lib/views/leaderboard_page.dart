@@ -1,103 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:ssu_prime/components/card.dart';
 import 'package:ssu_prime/components/drawer.dart';
+
 
 /*
 
-  Review Modules
+  Leaderboard
 
-  - This is where the students read their modules.
+  - This is where the it shows the ranking of the students
+  who took their mock test every week.
 
   -------------------------------------------------------------
   Contains
   - Search Bar
-  - Categories ( e.g. 'All Subjects')
-  - Sort By ( e.g. 'Latest')
+  - Categories ( e.g. 'All Categories')
+  - Sort By ( e.g. 'Months')
 
 */
 
+class LeaderboardPage extends StatelessWidget {
 
-class ReviewModulesPage extends StatelessWidget {
-  const ReviewModulesPage({super.key});
+  const LeaderboardPage({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Row(
+      body: Row (
         children: [
           MyDrawer(),
 
-          // Main Content
           Expanded(
             flex: 5,
             child: Column(
               children: [
 
                 // Header
-                _buildHeader(context),
+                buildContainer(context),
 
                 // Search Bar
                 _buildSearchBar(context),
 
-                // Cards Content
-                _buildCards(context),
               ],
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Expanded _buildCards(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.35,
-                child: MyCard(
-                  title: 'Educational Psychology',
-                  description: 'Understanding learning theories and cognitive development',
-                  label: 'Progress',
-                  progress: 75,
-                  onPressed: () {},
-                ),
-              ),
-
-              const SizedBox(width: 20),
-
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.35,
-                child: MyCard(
-                  title: 'Teaching Methods',
-                  description: 'Modern approaches to effective teaching strategies',
-                  label: 'Progress',
-                  progress: 45,
-                  onPressed: () {},
-                ),
-              ),
-
-              const SizedBox(width: 20),
-
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.35,
-                child: MyCard(
-                  title: 'Child Development',
-                  description: 'Physical and cognitive development stages',
-                  label: 'Progress',
-                  progress: 0,
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -121,7 +69,7 @@ class ReviewModulesPage extends StatelessWidget {
               ),
               child: const TextField(
                 decoration: InputDecoration(
-                  hintText: "Search modules...",
+                  hintText: "Search students...",
                   border: InputBorder.none,
                   icon: Icon(Icons.search),
                 ),
@@ -141,7 +89,7 @@ class ReviewModulesPage extends StatelessWidget {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('All Subjects'),
+                Text('All Categories'),
                 Icon(Icons.arrow_drop_down),
               ],
             ),
@@ -159,7 +107,7 @@ class ReviewModulesPage extends StatelessWidget {
             child: const Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Sort by: Latest'),
+                Text('This Month'),
                 Icon(Icons.arrow_drop_down),
               ],
             ),
@@ -169,19 +117,18 @@ class ReviewModulesPage extends StatelessWidget {
     );
   }
 
-
-  Widget _buildHeader(BuildContext context) {
+  Container buildContainer(BuildContext context) {
     return Container(
       height: 60,
       width: double.infinity,
       color: Colors.white,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16),
       alignment: Alignment.centerRight,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "Review Modules",
+            "Leaderboard",
             style: TextStyle(
               color: Theme.of(context).textTheme.titleLarge?.color,
               fontSize: 17,
@@ -192,7 +139,7 @@ class ReviewModulesPage extends StatelessWidget {
           Container(
             height: 50,
             width: 226,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -201,7 +148,7 @@ class ReviewModulesPage extends StatelessWidget {
                   size: 25,
                   color: Theme.of(context).iconTheme.color,
                 ),
-                const SizedBox(width: 15),
+                SizedBox(width: 15),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,25 +157,25 @@ class ReviewModulesPage extends StatelessWidget {
                       "Maria Santos",
                       style: TextStyle(
                         color: Theme.of(context).textTheme.bodyMedium?.color,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      "Student",
-                      style: TextStyle(
-                        color: Theme.of(context).textTheme.bodyMedium?.color,
-                        fontSize: 10,
-                        fontWeight: FontWeight.normal,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                "Student",
+                                style: TextStyle(
+                                  color: Theme.of(context).textTheme.bodyMedium?.color,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.normal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+              );
   }
 }

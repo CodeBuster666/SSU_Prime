@@ -7,8 +7,8 @@ Drawer Tile it is a simple tile for each item in the menu drawer.
 
 Usage
 - Title (e.g. "User Profile")
-- icon (e.g. "Icons.home")
-- function (e.g. goToHomePage)
+- Icon (e.g. "Icons.home")
+- Function (e.g. goToHomePage)
 
 */
 

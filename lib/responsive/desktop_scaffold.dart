@@ -25,10 +25,7 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .colorScheme
-          .surface,
+      backgroundColor: Theme.of(context).colorScheme.surface,
 
       body: Row(
         children: [
@@ -38,6 +35,8 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
             flex: 5,
             child: Column(
               children: [
+
+                // Header
                 buildContainer(context),
 
                 // Tile
@@ -52,6 +51,9 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
   }
 
 
+
+
+
   Container buildContainer(BuildContext context) {
     return Container(
       height: 60,
@@ -62,25 +64,50 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            'SSU Prime Header',
-            style: Theme
-                .of(context)
-                .textTheme
-                .titleLarge,
-          ),
-
+          SizedBox(width: 100),
           Container(
-            height: 40,
-            width: 100,
-            color: Colors.yellow,
-            alignment: Alignment.center,
-            child: Text('Yellow Box'),
+            height: 50,
+            width: 226,
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Icon(
+                  Icons.person,
+                  size: 25,
+                  color: Theme.of(context).iconTheme.color,
+                ),
+                SizedBox(width: 15),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Maria Santos",
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      "Student",
+                      style: TextStyle(
+                        color: Theme.of(context).textTheme.bodyMedium?.color,
+                        fontSize: 10,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
+
 
   Expanded buildExpanded() {
     return Expanded(
@@ -94,55 +121,53 @@ class _DesktopScaffoldState extends State<DesktopScaffold> {
 
           // Boxes below the tile
           Expanded(
-            child: buildDashboardCards(), // Call buildAspectRatio here
+            child: () {
+              final List<Widget> boxes = [
+                const MyBox(
+                  icon: Icons.menu_book_outlined,
+                  label: "Current Module",
+                  title: "Educational Psychology",
+                  subText: "Progress: 75%",
+                  buttonText: "Resume Module",
+                  boxColor: Colors.blueAccent,
+                ),
+                const MyBox(
+                  icon: Icons.description_outlined,
+                  label: "Mock Test",
+                  title: "Practice Test #4",
+                  subText: "Duration: 2 hours",
+                  buttonText: "Start Test",
+                  boxColor: Colors.green,
+                ),
+                const MyBox(
+                  icon: Icons.emoji_events_outlined,
+                  label: "Your Rank",
+                  title: "#3 This Week",
+                  subText: "Score: 92/100",
+                  buttonText: "View Leaderboard",
+                  boxColor: Colors.orange,
+                ),
+                const MyBox(
+                  icon: Icons.calendar_today_outlined,
+                  label: "Next Session",
+                  title: "Child Development",
+                  subText: "Today, 2:00 PM",
+                  buttonText: "Join Session",
+                  boxColor: Colors.purple,
+                ),
+              ];
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                child: Wrap(
+                  spacing: 20,
+                  runSpacing: 20,
+                  children: boxes,
+                ),
+              );
+            }(), // Call buildAspectRatio here
           ),
         ],
-      ),
-    );
-  }
-
-  Widget buildDashboardCards() {
-    final List<Widget> boxes = [
-      const MyBox(
-        icon: Icons.menu_book_outlined,
-        label: "Current Module",
-        title: "Educational Psychology",
-        subText: "Progress: 75%",
-        buttonText: "Resume Module",
-        boxColor: Colors.blueAccent,
-      ),
-      const MyBox(
-        icon: Icons.description_outlined,
-        label: "Mock Test",
-        title: "Practice Test #4",
-        subText: "Duration: 2 hours",
-        buttonText: "Start Test",
-        boxColor: Colors.green,
-      ),
-      const MyBox(
-        icon: Icons.emoji_events_outlined,
-        label: "Your Rank",
-        title: "#3 This Week",
-        subText: "Score: 92/100",
-        buttonText: "View Leaderboard",
-        boxColor: Colors.orange,
-      ),
-      const MyBox(
-        icon: Icons.calendar_today_outlined,
-        label: "Next Session",
-        title: "Child Development",
-        subText: "Today, 2:00 PM",
-        buttonText: "Join Session",
-        boxColor: Colors.purple,
-      ),
-    ];
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-      child: Wrap(
-        spacing: 20,
-        runSpacing: 20,
-        children: boxes,
       ),
     );
   }

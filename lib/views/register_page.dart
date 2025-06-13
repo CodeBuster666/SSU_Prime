@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ssu_prime/services/auth/auth_service.dart';
 import '../components/button.dart';
 import '../components/textfield.dart';
 import '../responsive/responsive.dart';
@@ -36,6 +37,9 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  // Access Authentication & Database Service
+  final _auth = AuthService();
+
 
   // Text Controllers
   final TextEditingController SchoolIdController = TextEditingController();
@@ -48,7 +52,31 @@ class _RegisterPageState extends State<RegisterPage> {
     // Password match -> create account
     if(PasswordController.text == ConfirmPasswordController.text){
       // Show Loading Circle
+
+      // Attempt to Register New User
+      try{
+        // Trying to Register New User
+        await _auth.RegisterEmailPassword(
+            EmailController.text,
+            PasswordController.text);
+
+        // After Successfully Registration, Create and Save User Profile in Database
+
+      }
+
+      catch (e) {
+        // Inform the User of the erro
+        if(mounted){
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(e.toString()),
+            ),
+          );
+        }
+      }
     }
+    // Confirm if the ID is Match to the registered Student ID of the School.
 
     else {
       // Show error message

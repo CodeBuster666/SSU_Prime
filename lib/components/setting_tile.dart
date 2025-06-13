@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
     - title (e.g. "Light Mode")
     - action (e.g. toggleTheme() )
 */
+
 class SettingTile extends StatelessWidget {
   final String title;
   final Widget action;

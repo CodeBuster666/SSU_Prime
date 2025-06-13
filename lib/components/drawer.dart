@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ssu_prime/responsive/desktop_scaffold.dart';
+import 'package:ssu_prime/views/leaderboard_page.dart';
+import 'package:ssu_prime/views/login_page.dart';
+import 'package:ssu_prime/views/mock_test_page.dart';
+import 'package:ssu_prime/views/schedule_page.dart';
+import 'package:ssu_prime/views/setting_page.dart';
+import '../services/auth/auth_service.dart';
 import '../views/review_modules_page.dart';
 import 'drawer_tile.dart';
 
@@ -25,11 +32,10 @@ class MyDrawer extends StatelessWidget {
 
 
   MyDrawer({
-    super.key,
-
+  super.key,
   });
 
-  /*
+
   // Access Authentication Service
   final _auth = AuthService();
 
@@ -38,19 +44,18 @@ class MyDrawer extends StatelessWidget {
     _auth.logout();
   }
 
-   */
 
   @override
   Widget build(BuildContext context) {
 
     // const Drawer
     return Drawer(
-      backgroundColor: Theme.of(context).colorScheme.surface,
+      backgroundColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             const SizedBox(height: 30),
             // App logo
             ListTile(
@@ -62,12 +67,11 @@ class MyDrawer extends StatelessWidget {
               title: Text(
                   "SSU Prime",
                 style: TextStyle(
-                color: Theme.of(context).textTheme.headlineMedium?.color,
+                  color: Theme.of(context).textTheme.headlineMedium?.color,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              onTap: () {},
             ),
 
             const SizedBox(height: 10),
@@ -79,24 +83,35 @@ class MyDrawer extends StatelessWidget {
               color: Theme.of(context).highlightColor,
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // Profile List Tile
             DrawerTile(
               title: "Dashboard",
               icon: Icons.dashboard,
-              onTap: () {},
+              onTap: () {
+                // Pop Menu Drawer
+                Navigator.pop(context);
+
+                // Go to Dashboard Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DesktopScaffold(),
+                  ),
+                );
+              },
             ),
 
             // Home List Tile
             DrawerTile(
               title: "Review Modules",
-              icon: Icons.reviews,
+              icon: Icons.menu_book,
               onTap: () {
-                // pop menu drawer
+                // Pop Menu Drawer
                 Navigator.pop(context);
 
-                // go to home page
+                // Go to Homepage
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -109,22 +124,74 @@ class MyDrawer extends StatelessWidget {
             //Mock Test List Tile
             DrawerTile(
               title: "Mock Test",
-              icon: Icons.text_snippet,
-              onTap: () {},
+              icon: Icons.quiz,
+              onTap: () {
+                // Pop Menu Drawer
+                Navigator.pop(context);
+
+                // Go to Mock Test
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => MockTestPage(),
+                  ),
+                );
+
+              },
             ),
 
             //Leadersboard List Tile
             DrawerTile(
               title: "Leadersboard",
               icon: Icons.leaderboard,
-              onTap: () {},
+              onTap: () {
+                // Pop Menu Drawer
+                Navigator.pop(context);
+
+                // Go to Leaderboard Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LeaderboardPage(),
+                  ),
+                );
+              },
+            ),
+
+            //Leadersboard List Tile
+            DrawerTile(
+              title: "Community",
+              icon: Icons.people_sharp,
+              onTap: () {
+                // Pop Menu Drawer
+                Navigator.pop(context);
+
+                // Go to Leaderboard Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LeaderboardPage(),
+                  ),
+                );
+              },
             ),
 
             //Schedule List Tile
             DrawerTile(
               title: "Schedule",
-              icon: Icons.date_range,
-              onTap: () {},
+              icon: Icons.calendar_today,
+              onTap: () {
+                // Pop Menu Drawer
+                Navigator.pop(context);
+
+                // Go to Schedule Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SchedulePage(),
+                  ),
+                );
+              },
             ),
 
             //Settings List Tile
@@ -132,21 +199,17 @@ class MyDrawer extends StatelessWidget {
               title: "Settings",
               icon: Icons.settings,
               onTap: () {
-                // pop menu drawer
+                // Pop menu drawer
                 Navigator.pop(context);
 
-                /*
-                // go to settings page
+
+                // Go to Settings Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SettingsPage(),
+                    builder: (context) => SettingPage(),
                   ),
                 );
-
-                 */
-
-
               }, // OnTap
             ),
 
@@ -156,7 +219,18 @@ class MyDrawer extends StatelessWidget {
             DrawerTile(
               title: "Log Out",
               icon: Icons.logout,
-              onTap: (){},
+              onTap: (){
+
+                // Go to Login Page
+                Navigator.push(
+                    context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(
+                      onTap: logout,
+                    ),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 10),
