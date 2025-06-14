@@ -5,6 +5,15 @@ class Marg extends StatelessWidget {
 
     @override
   Widget build(BuildContext context) {
-    
+    return MaterialApp(
+      title: 'SSU huhu',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.grey[100],
+      ),
+      home: const ReviewModulesPage(),
+    );
   }
+
+  
 }
