@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ssu_prime/components/loading.dart';
 import 'package:ssu_prime/services/auth/auth_service.dart';
 import '../components/button.dart';
 import '../components/textfield.dart';
@@ -43,6 +44,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
   // Text Controllers
   final TextEditingController SchoolIdController = TextEditingController();
+  final TextEditingController FirstNameController = TextEditingController();
+  final TextEditingController LastNameController = TextEditingController();
   final TextEditingController EmailController = TextEditingController();
   final TextEditingController PasswordController = TextEditingController();
   final TextEditingController ConfirmPasswordController = TextEditingController();
@@ -52,6 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
     // Password match -> create account
     if(PasswordController.text == ConfirmPasswordController.text){
       // Show Loading Circle
+      ShowLoading(context);
 
       // Attempt to Register New User
       try{
@@ -61,11 +65,11 @@ class _RegisterPageState extends State<RegisterPage> {
             PasswordController.text);
 
         // After Successfully Registration, Create and Save User Profile in Database
-
+        if (mounted) HideLoading(context);
       }
 
       catch (e) {
-        // Inform the User of the erro
+        // Inform the User of the error
         if(mounted){
           showDialog(
             context: context,

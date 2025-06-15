@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ssu_prime/components/loading.dart';
 import 'package:ssu_prime/responsive/responsive.dart';
 import 'package:ssu_prime/services/auth/auth_service.dart';
 import 'package:ssu_prime/views/register_page.dart';
@@ -29,14 +30,29 @@ class _LoginPageState extends State<LoginPage> {
   void Login () async {
     // Attempt to login
     try {
-      await _auth.LoginEmailPassword(
-          EmailControlller.text,
-          PasswordControlller.text);
+      await _auth
+          .LoginEmailPassword(EmailControlller.text, PasswordControlller.text)
+          .timeout(Duration(seconds: 10));
+
+      // Finished Loading
+      if (mounted) HideLoading(context);
+
     }
 
     // Catch any errors
     catch (e) {
-      print(e.toString());
+      // Finished Loading
+      if (mounted) HideLoading(context);
+
+      // Inform the User about the error
+      if (mounted){
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: Text(e.toString()),
+            ),
+        );
+      }
     }
   }
 
