@@ -1,4 +1,4 @@
-# ssu_prime
+# SSU Prime
 
 A new Flutter project.
 
