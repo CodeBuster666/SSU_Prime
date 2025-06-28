@@ -23,26 +23,30 @@ class _LoginPageState extends State<LoginPage> {
   final _auth = AuthService();
 
   // text Controllers
-  final TextEditingController EmailControlller = TextEditingController();
-  final TextEditingController PasswordControlller = TextEditingController();
+  final TextEditingController emailControlller = TextEditingController();
+  final TextEditingController passwordControlller = TextEditingController();
 
   // Login Method
-  void Login () async {
+  void login () async {
+    // Show Loading Circle
+    showLoading(context);
+
     // Attempt to login
     try {
+      // Trying to Login
       await _auth
-          .LoginEmailPassword(EmailControlller.text, PasswordControlller.text)
-          .timeout(Duration(seconds: 10));
+          .loginEmailPassword(emailControlller.text, passwordControlller.text);
+
 
       // Finished Loading
-      if (mounted) HideLoading(context);
+      if (mounted) hideLoading(context);
 
     }
 
     // Catch any errors
     catch (e) {
       // Finished Loading
-      if (mounted) HideLoading(context);
+      if (mounted) hideLoading(context);
 
       // Inform the User about the error
       if (mounted){
@@ -146,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
 
               // Email Text field
               MyTextfield(
-                controller: EmailControlller,
+                controller: emailControlller,
                 hintText: "Enter Email",
                 obscureText: false,
               ),
@@ -156,7 +160,7 @@ class _LoginPageState extends State<LoginPage> {
 
               // Password Text field
               MyTextfield(
-                controller: PasswordControlller,
+                controller: passwordControlller,
                 hintText: "Enter Password",
                 obscureText: true,
               ),
@@ -184,7 +188,7 @@ class _LoginPageState extends State<LoginPage> {
               // Sign In Button
               MyButton(
                 text: "Login",
-                onTap: Login,
+                onTap: login,
               ),
 
               const SizedBox(height: 20),

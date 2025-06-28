@@ -23,12 +23,12 @@ class AuthService {
   String getCurrentUid() => _auth.currentUser!.uid;
 
   // Login (student ID & password)
-  Future<UserCredential> LoginEmailPassword(String Email, Password) async {
+  Future<UserCredential> loginEmailPassword(String email, password) async {
     // Attempt to login
     try {
       final userCredential = await _auth.signInWithEmailAndPassword(
-        email: Email,
-        password: Password,
+        email: email,
+        password: password,
       );
       return userCredential;
     }
@@ -40,12 +40,12 @@ class AuthService {
   }
 
   // Register (email & password) To be updated into Student ID, Email, and Password)
-  Future<UserCredential> RegisterEmailPassword(String Email, Password) async {
+  Future<UserCredential> registerEmailPassword(String studentId, String email, password) async {
     // Attempt to register
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: Email,
-        password: Password,
+        email: email,
+        password: password,
       );
       return userCredential;
     }

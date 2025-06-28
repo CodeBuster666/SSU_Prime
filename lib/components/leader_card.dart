@@ -14,11 +14,11 @@ import 'package:flutter/material.dart';
 */
 
 class LeaderCard extends StatelessWidget {
-  final String Profile;
+  final String profile;
 
   const LeaderCard({
     super.key,
-    required this. Profile,
+    required this. profile,
   });
 
   @override

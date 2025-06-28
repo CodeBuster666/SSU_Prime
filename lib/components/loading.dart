@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 */
 
 // Show Loading Circle
-void ShowLoading (BuildContext context) {
+void showLoading (BuildContext context) {
   showDialog(
     context: context,
     barrierDismissible: false, // Prevent dismissing by tapping outside
@@ -20,6 +20,6 @@ void ShowLoading (BuildContext context) {
 }
 
 // Hide Loading Circle
-void HideLoading (BuildContext context) {
+void hideLoading (BuildContext context) {
   Navigator.pop(context);
 }

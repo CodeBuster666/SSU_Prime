@@ -206,8 +206,6 @@ class _MockTestPageState extends State<MockTestPage> {
           ),
 
           Container(
-            height: 50,
-            width: 226,
             padding: EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,

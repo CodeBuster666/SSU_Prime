@@ -20,19 +20,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserProfile {
   final String uid;
   final String studentID;
-  final String username;
-  final String firstName;
-  final String lastName;
+  final String name;
   final String email;
+  final String username;
   final String about;
 
   UserProfile({
     required this. uid,
     required this.studentID,
-    required this.username,
-    required this.firstName,
-    required this.lastName,
+    required this.name,
     required this.email,
+    required this.username,
     required this.about,
   });
 
@@ -43,13 +41,12 @@ class UserProfile {
 
   factory UserProfile.formDocument(DocumentSnapshot doc) {
     return UserProfile(
-        uid: doc['uid'],
-        studentID: doc['studentID'],
-        username: doc ['userName'],
-        firstName: doc['firstName'],
-        lastName: doc['lastName'],
-        email: doc ['email'],
-        about: doc ['about']
+      uid: doc['uid'],
+      studentID: doc['studentID'],
+      name: doc['name'],
+      email: doc ['email'],
+      username: doc ['username'],
+      about: doc ['about'],
     );
   }
 
@@ -62,10 +59,9 @@ class UserProfile {
     return{
       'uid': uid,
       'studentID': studentID,
-      'username' : username,
-      'firstName': firstName,
-      'lastName': lastName,
+      'name': name,
       'email': email,
+      'username' : username,
       'about': about,
     };
   }

@@ -36,8 +36,6 @@ class _MobileScaffoldState extends State<MobileScaffold> {
       body: Column(
         children: [
 
-
-
           // Tiles below
           Expanded(
             child: ListView.builder(
