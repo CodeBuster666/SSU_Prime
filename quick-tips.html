@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Quick Tips</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #648db6;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
+            background-color: #f0f0f0;
+            color: #1e90ff;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
+            width: calc(100% - 250px);
+        }
+
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Welcome Section */
+        .welcome {
+            text-align: center;
+            padding: 30px;
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .welcome::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            z-index: -1;
+        }
+        .welcome h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+            animation: bounce 0.5s ease;
+        }
+        .welcome p {
+            margin: 10px 0;
+            color: #e0e0e0;
+            font-size: 16px;
+            line-height: 1.6;
+            text-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background: rgba(30, 144, 255, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #1e90ff;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .tips-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+        }
+        .tips-section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .tips-section p {
+            font-size: 14px;
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        .tip-item {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+        .tip-item::before {
+            content: "➡️";
+            color: #1e90ff;
+            margin-right: 8px;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .hamburger {
+                display: block;
+            }
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .welcome h1 {
+                font-size: 24px;
+            }
+            .tips-section {
+                padding: 15px;
+            }
+            .user-info {
+                position: static;
+                margin-bottom: 20px;
+                text-align: right;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .main-content.active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+            .welcome h1 {
+                font-size: 20px;
+            }
+            .tips-section {
+                padding: 12px;
+            }
+            .user-info {
+                position: static;
+                margin-bottom: 20px;
+                text-align: right;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .welcome h1 {
+                font-size: 18px;
+            }
+            .tips-section {
+                padding: 10px;
+            }
+            .user-info {
+                padding: 5px;
+                min-width: 100px;
+            }
+            .user-info .icon {
+                font-size: 20px;
+            }
+            .user-info span {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>SSU Prime</h2>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="reviewModules.html">Review Modules</a></li>
+                <li><a href="mockTest.html">Mock Tests</a></li>
+                <li><a href="index.html">Log Out</a></li>
+            </ul>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" onclick="toggleMenu()"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="test-container">
+                <div class="welcome">
+                    <h1>Welcome to Quick Tips! 📚</h1>
+                    <p>Enhance your review with these effective strategies.</p>
+                </div>
+                <div class="tips-section">
+                    <h2>Tips for Effective Review</h2>
+                    <p>Preparing for your exams or mastering new material can be streamlined with these practical tips:</p>
+                    <div class="tip-item">Create a study schedule to organize your time and focus on key topics.</div>
+                    <div class="tip-item">Use active recall by testing yourself on material instead of re-reading notes.</div>
+                    <div class="tip-item">Break down complex topics into smaller, manageable sections for easier understanding.</div>
+                    <div class="tip-item">Review past quizzes and mistakes to identify areas needing improvement.</div>
+                    <div class="tip-item">Take regular breaks to maintain focus and avoid burnout—try the Pomodoro technique (25 minutes study, 5 minutes break).</div>
+                    <div class="tip-item">Discuss concepts with peers or teach others to reinforce your knowledge.</div>
+                    <div class="tip-item">Utilize visual aids like mind maps or flashcards to enhance memory retention.</div>
+                    <p>Incorporate these strategies into your routine to maximize your learning efficiency and boost your confidence for upcoming assessments!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

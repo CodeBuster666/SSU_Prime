@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="firebaseauth.js"></script>
+<body>
+    <div class="login-container">
+        <div class="welcome-section">
+            <div class="logo">◎</div>
+            <h1>WELCOME TO SSU_PRIME</h1>
+            <p>Your gateway to smarter, faster, and seamless digital solutions. Whether you're here to streamline workflows, analyze data, or collaborate effortlessly—we’re thrilled to empower your success. Explore the features, and let’s make every interaction count!.</p>
+        </div>
+        <div class="form-card">
+            <div id="signInForm">
+                <h2>Log In</h2>
+                <div class="form-group">
+                    <input type="email" id="signInEmail" placeholder="Email" required>
+                    <div class="error" id="signInEmailError">Please enter a valid email</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signInPassword" placeholder="Password" required>
+                    <div class="error" id="signInPasswordError">Password is required</div>
+                </div>
+                <div class="forgot-password">
+                    <a href="#" onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+                <button onclick="handleSignIn()">SIGN IN</button>
+                <div class="toggle-link">
+                    <p>Not a member yet? <a href="#" onclick="showSignUp()">Create a new account</a></p>
+                </div>
+            </div>
+
+            <div id="signUpForm" style="display: none;">
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <input type="text" id="signUpName" placeholder="Full Name" required>
+                    <div class="error" id="signUpNameError">Name is required</div>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signUpEmail" placeholder="Email" required>
+                    <div class="error" id="signUpEmailError">Please enter a valid email</div>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signUpPassword" placeholder="Password" required>
+                    <div class="error" id="signUpPasswordError">Password must be at least 6 characters</div>
+                </div>
+                <button onclick="handleSignUp()">Sign Up</button>
+                <div class="toggle-link">
+                    <p>Already have an account? <a href="#" onclick="showSignIn()">Log In</a></p>
+                </div>
+            </div>
+
+            <div id="forgotPasswordForm" style="display: none;">
+                <h2>Forgot Password</h2>
+                <div class="form-group">
+                    <input type="email" id="forgotEmail" placeholder="Email" required>
+                    <div class="error" id="forgotEmailError">Please enter a valid email</div>
+                </div>
+                <button onclick="handleForgotPassword()">Reset Password</button>
+                <div class="toggle-link">
+                    <p>Remembered your password? <a href="#" onclick="showSignIn()">Log In</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>

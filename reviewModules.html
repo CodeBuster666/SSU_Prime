@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Review Modules</title>
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color:#648db6;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
+            background-color: #f0f0f0;
+            color: #1e90ff;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
+            width: calc(100% - 250px);
+        }
+
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .header input {
+            padding: 8px;
+            width: 250px;
+            border: 1px solid #1e90ff;
+            border-radius: 10px;
+            background: rgba(22, 33, 62, 0.7);
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: box-shadow 0.3s ease;
+        }
+        .header input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+        }
+
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .test-card {
+            background: rgba(22, 33, 62, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #1e90ff;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 250px;
+        }
+        .test-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+        }
+        .test-card .icon {
+            font-size: 28px;
+            color: #1e90ff;
+            margin-bottom: 12px;
+            transition: transform 0.3s ease;
+        }
+        .test-card:hover .icon {
+            transform: rotate(10deg);
+        }
+        .test-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00ffcc;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .test-card p {
+            font-size: 14px;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .test-card .progress {
+            width: 100%;
+            background: #0f0f1a;
+            height: 10px;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .test-card .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            border-radius: 8px;
+            width: 0;
+            box-shadow: 0 0 5px #1e90ff;
+            transition: width 0.5s ease-in-out;
+        }
+        .test-card .progress-bar[data-progress="75"] {
+            width: 75%;
+        }
+        .test-card .progress-bar[data-progress="45"] {
+            width: 45%;
+        }
+        .test-card .progress-bar[data-progress="60"] {
+            width: 60%;
+        }
+        .test-card .progress-bar[data-progress="0"] {
+            width: 0%;
+        }
+        .test-card .progress::after {
+            content: 'Completion';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            font-size: 10px;
+            color: #00ffcc;
+            text-shadow: 0 0 3px #00ffcc;
+        }
+        .test-card a.btn {
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            color: #1a1a2e;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px;
+            display: inline-block;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            box-shadow: 0 0 10px #1e90ff;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-card a.btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .test-card a.btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ffcc;
+        }
+        .test-card a.btn:hover::after {
+            width: 200px;
+            height: 200px;
+            margin-left: -100px;
+            margin-top: -100px;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .hamburger {
+                display: block;
+            }
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .header h2 {
+                font-size: 24px;
+            }
+            .header input {
+                width: 200px;
+            }
+            .test-card {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .main-content.active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h2 {
+                font-size: 20px;
+            }
+            .header input {
+                width: 150px;
+            }
+            .test-card {
+                padding: 12px;
+            }
+            .test-card h3 {
+                font-size: 16px;
+            }
+            .test-card p {
+                font-size: 12px;
+            }
+            .test-card a.btn {
+                width: 120px;
+                padding: 6px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .header h2 {
+                font-size: 18px;
+            }
+            .header input {
+                width: 120px;
+                padding: 5px;
+            }
+            .test-card {
+                padding: 10px;
+            }
+            .test-card h3 {
+                font-size: 14px;
+            }
+            .test-card p {
+                font-size: 10px;
+            }
+            .test-card a.btn {
+                width: 100px;
+                padding: 4px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>SSU Prime</h2>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li class="active"><a href="reviewModules.html">Review Modules</a></li>
+                <li><a href="mockTest.html">Mock Tests</a></li>
+                <li><a href="index.html">Log Out</a></li>
+            </ul>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" onclick="toggleMenu()"></div>
+
+        <div class="main-content">
+            <div class="test-container">
+                <div class="header">
+                    <h2>Review Modules</h2>
+                    <input type="text" placeholder="Search modules...">
+                </div>
+                <div class="test-grid">
+                    <div class="test-card">
+                        <div class="icon">🧠</div>
+                        <h3>Educational Psychology</h3>
+                        <p>Understanding learning theories and cognitive development</p>
+                        <a href="educational-psychology.html" class="btn">Continue Learning</a>
+                    </div>
+                    <div class="test-card">
+                        <div class="icon">📚</div>
+                        <h3>Teaching Methods</h3>
+                        <p>Modern approaches to effective teaching strategies</p>
+                        <a href="advance_learning.html" class="btn">Continue Learning</a>
+                    </div>
+                    <div class="test-card">
+                        <div class="icon">👶</div>
+                        <h3>Child Development</h3>
+                        <p>Physical and cognitive development stages</p>
+                        <a href="expert_child_development.html" class="btn">Continue Learning</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

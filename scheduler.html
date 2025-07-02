@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Study Schedule</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            width: 100%;
+            padding: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+
+        .sidebar .active a {
+            background-color: #3498db;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1100;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            margin-left: 250px;
+            background-color: #f4f4f4;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+        }
+
+        .view-toggle button {
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        .view-toggle button.active {
+            background-color: #1e90ff;
+            color: #fff;
+            border-color: #1e90ff;
+        }
+
+        .calendar {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-header button {
+            padding: 8px 15px;
+            background-color: #1e90ff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .calendar-header button:hover {
+            background-color: #1c86ee;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            min-height: 100px;
+        }
+
+        .calendar-day.event {
+            background-color: #e6f3ff;
+            position: relative;
+        }
+
+        .calendar-day.event span {
+            background-color: #1e90ff;
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .upcoming-events {
+            margin-top: 20px;
+        }
+
+        .upcoming-events h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .event-item {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .hamburger {
+                display: block;
+                color: black;
+            }
+
+            .main-content.active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+
+            .calendar-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Overlay for mobile when menu is open */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>SSU Prime</h2>
+            <ul>
+                <li><a href="Dashboard.html">Dashboard</a></li>
+                <li><a href="ReviewModule.html">Review Modules</a></li>
+                <li><a href="MockTest.html">Mock Tests</a></li>
+                <li><a href="Leaderboard.html">Leaderboard</a></li>
+                <li><a href="Community.html">Community</a></li>
+                <li class="active"><a href="Scheduler.html">Scheduler</a></li>
+                <li><a href="admin.html">Admin Tools</a></li>
+                <li><a href="index.html">Log Out</output></a></li>
+            </ul>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" onclick="toggleMenu()"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Study Schedule</h2>
+                <div class="view-toggle">
+                    <button class="active">Month</button>
+                    <button>Week</button>
+                    <button>Day</button>
+                </div>
+            </div>
+            <div class="calendar">
+                <div class="calendar-header">
+                    <button>← May 2025</button>
+                    <button>Add Event</button>
+                    <button>June 2025 →</button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day">28</div>
+                    <div class="calendar-day">29</div>
+                    <div class="calendar-day">30</div>
+                    <div class="calendar-day">1</div>
+                    <div class="calendar-day">2</div>
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day event"><span>Mock Test #1</span></div>
+                    <div class="calendar-day">9</div>
+                    <div class="calendar-day">10</div>
+                    <div class="calendar-day">11</div>
+                </div>
+            </div>
+            <div class="upcoming-events">
+                <h3>Upcoming Events</h3>
+                <div class="event-item">
+                    <p><strong>Study Session: Professional Education</strong></p>
+                    <p>May 8, 2025 • 2:00 PM - 4:00 PM</p>
+                </div>
+                <div class="event-item">
+                    <p><strong>Mock Test #2</strong></p>
+                    <p>May 15, 2025 • 9:00 AM - 12:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close menu when clicking outside on mobile
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

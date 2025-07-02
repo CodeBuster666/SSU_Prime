@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Educational Psychology</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
+            background-color: #f0f0f0;
+            color: #1e90ff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
+            width: calc(100% - 250px);
+        }
+
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+        .module-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .module-header p {
+            color: #e0e0e0;
+            margin-top: 10px;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+        }
+
+        .progress {
+            width: 100%;
+            background: #0f0f1a;
+            height: 10px;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            border-radius: 8px;
+            width: 0;
+            box-shadow: 0 0 5px #1e90ff;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress::after {
+            content: 'Completion';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            font-size: 10px;
+            color: #00ffcc;
+            text-shadow: 0 0 3px #00ffcc;
+        }
+
+        .section {
+            background: rgba(22, 33, 62, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+        }
+        .section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .section p {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+            text-align: justify;
+        }
+        .section.active p {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .hamburger {
+                display: block;
+            }
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .module-header h1 {
+                font-size: 24px;
+            }
+            .module-header p {
+                font-size: 14px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .section h2 {
+                font-size: 18px;
+            }
+            .section p {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .main-content.active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+            .module-header h1 {
+                font-size: 20px;
+            }
+            .module-header p {
+                font-size: 12px;
+            }
+            .section {
+                padding: 12px;
+            }
+            .section h2 {
+                font-size: 16px;
+            }
+            .section p {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .module-header h1 {
+                font-size: 18px;
+            }
+            .module-header p {
+                font-size: 10px;
+            }
+            .section {
+                padding: 10px;
+            }
+            .section h2 {
+                font-size: 14px;
+            }
+            .section p {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    
+    <div class="sidebar">
+        <h2>SSU Prime</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="active"><a href="reviewModules.html">Review Modules</a></li>
+            <li><a href="mockTest.html">Mock Tests</a></li>
+            <li><a href="index.html">Log Out</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <div class="main-content">
+        <div class="test-container">
+            <div class="module-header">
+                <h1>Educational Psychology</h1>
+                <p>Understanding learning theories and cognitive development</p>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <p>Progress: <span id="progressPercent">0%</span></p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 1: Introduction to Learning Theories</h2>
+                <p>Educational psychology serves as the foundation for understanding how students acquire knowledge, with learning theories providing critical frameworks. Behaviorism, pioneered by John B. Watson and B.F. Skinner, emphasizes observable behaviors and employs conditioning techniques using rewards and punishments to shape learning. This approach proves highly effective in structured classroom settings, where positive reinforcement encourages desirable behaviors and establishes routines, offering educators practical tools for managing student conduct and maintaining discipline.</p>
+                <p>Cognitivism shifts the focus to internal mental processes, drawing on the insights of Jean Piaget and Lev Vygotsky, who explored memory, problem-solving, and information processing. This theory views the mind as an active processor, guiding educators to design lessons that enhance cognitive skills such as retention and critical thinking through structured activities and reflective exercises. It underscores the importance of understanding how students organize and retrieve information, tailoring instructional strategies to individual cognitive strengths.</p>
+                <p>Constructivism, influenced by Vygotsky’s sociocultural theory, posits that learners construct knowledge through personal experiences and social interactions. This approach advocates for active learning methods, such as project-based learning and group discussions, which foster critical thinking and collaboration. By integrating these diverse theories, educators can adapt teaching strategies to meet varied student needs, shaping modern educational practices that prioritize engagement, inclusivity, and lifelong learning skills.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 2: Cognitive Development</h2>
+                <p>Cognitive development explores the evolution of children’s thinking processes, with Jean Piaget’s theory dividing this growth into four distinct stages. The sensorimotor stage, spanning birth to 2 years, involves learning through sensory experiences and physical actions, laying the groundwork for basic understanding. The pre operational stage, from 2 to 7 years, introduces symbolic thinking and imaginative play, though it is hindered by egocentrism, where children struggle to see others’ perspectives, guiding age-appropriate teaching methods.</p>
+                <p>The concrete operational stage, occurring between 7 and 11 years, enables children to engage in logical reasoning about tangible events, such as understanding conservation of quantity, marking a shift toward more structured thinking. The formal operational stage, beginning around 12 years, allows for abstract thinking and hypothesis testing, equipping adolescents with skills for complex problem-solving. Lev Vygotsky’s sociocultural theory complements this by emphasizing social interaction’s role, introducing the Zone of Proximal Development (ZPD) to support guided learning through collaboration.</p>
+                <p>Vygotsky’s scaffolding concept, where teachers or peers provide targeted assistance within the ZPD, significantly enhances cognitive growth by bridging current abilities and potential learning. Enriched environments, filled with diverse materials and interactive tools, boost memory, problem-solving, and intellectual curiosity. Educators leverage these insights to design curricula that integrate technology, such as educational apps, ensuring developmental stages are supported with innovative and engaging instructional approaches.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 3: Motivation in Learning</h2>
+                <p>Motivation is a key driver of student engagement, categorized into intrinsic and extrinsic types that influence learning outcomes. Intrinsic motivation arises from personal interest, such as enjoying a challenging puzzle or exploring a favorite subject, while extrinsic motivation depends on external rewards like grades or praise. Self-Determination Theory (SDT), developed by Deci and Ryan, highlights the importance of autonomy, competence, and relatedness, suggesting that fostering these elements sustains long-term motivation in educational settings.</p>
+                <p>Maslow’s Hierarchy of Needs further informs this process, asserting that basic needs like safety, food, and shelter must be met before higher-level goals, such as self-actualization through learning, can be pursued. Teachers can enhance motivation by offering students choices in tasks, creating a supportive community, and recognizing individual efforts, ensuring they feel valued and capable of achieving success. This approach builds a positive learning environment that encourages persistence and self-directed growth.</p>
+                <p>Practical strategies to boost motivation include setting clear goals, providing constructive feedback, and incorporating gamification to make learning interactive. Technology, such as online platforms with instant feedback or educational games, maintains student interest and engagement. Understanding these motivational dynamics enables educators to inspire diverse learners, tailoring approaches to address individual needs and promote a lifelong passion for education and personal development.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 4: Assessment and Evaluation</h2>
+                <p>Assessment and evaluation are essential processes for gauging student learning and informing instructional strategies. Formative assessment provides ongoing feedback during lessons through methods like quizzes or class discussions, allowing teachers to adjust their approaches in real time to address student needs. Summative assessment, such as final exams or projects, measures end-of-unit achievement, offering a comprehensive view of progress and mastery, both of which are vital for tracking development and refining teaching methods.</p>
+                <p>Bloom’s Taxonomy serves as a valuable framework for creating assessments across cognitive levels, from basic recall to advanced analysis, ensuring a thorough evaluation of student abilities. Reliability and validity are critical to producing consistent and accurate results, while diverse assessment methods, including essays, presentations, or hands-on projects, cater to various learning styles and cultural backgrounds, promoting inclusivity in the classroom. This variety helps educators gain a holistic understanding of student performance.</p>
+                <p>Technology enhances assessment through online tools and automated grading systems, though over-reliance on standardized tests may narrow the focus of learning. Effective evaluation involves interpreting data to implement targeted interventions, such as reading strategies for comprehension difficulties, ensuring all students receive appropriate support. This continuous cycle of assessment and feedback supports fair, meaningful evaluations, fostering equity and optimizing learning outcomes across diverse educational contexts.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 5: Classroom Management</h2>
+                <p>Classroom management is fundamental to creating a productive learning environment, beginning with the establishment of clear rules and expectations set early in the school year. Positive reinforcement, such as verbal praise or small rewards, encourages good behavior, while consistent consequences for rule-breaking maintain order and discipline. Lee Canter’s Assertive Discipline model balances firmness with empathy, building trust between teachers and students, which is essential for a respectful and cooperative classroom atmosphere.</p>
+                <p>Proactive strategies, including engaging lesson plans and well-defined routines, help prevent disruptions by keeping students focused and involved. Reactive approaches, such as conflict resolution techniques or one-on-one discussions, address issues as they arise, ensuring a harmonious environment. Flexible seating arrangements foster collaboration, while cultural sensitivity allows teachers to tailor strategies to diverse backgrounds, enhancing inclusivity and accommodating different learning preferences within the classroom.</p>
+                <p>Technology, such as classroom management apps, enables teachers to track behavior and make data-driven decisions to improve student engagement. Well-managed classrooms reduce stress for both teachers and students, though challenges like large class sizes require adaptive techniques, such as group leadership roles or peer support systems. Fostering a sense of community through team-building activities promotes mutual respect, supporting long-term educational success and creating a positive learning culture that benefits all stakeholders.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                    document.querySelector('.main-content').classList.remove('active');
+                    document.querySelector('.overlay').classList.remove('active');
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+
+        function toggleSection(section) {
+            section.classList.toggle('active');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const sections = document.querySelectorAll('.section');
+            const activeSections = document.querySelectorAll('.section.active');
+            const progressPercent = (activeSections.length / sections.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressPercent');
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `${Math.round(progressPercent)}%`;
+        }
+
+        // Initial call to set progress if any sections are pre-active
+        updateProgress();
+    </script>
+</body>
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Expert Child Development</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
+            background-color: #f0f0f0;
+            color: #1e90ff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
+            width: calc(100% - 250px);
+        }
+
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+        .module-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .module-header p {
+            color: #e0e0e0;
+            margin-top: 10px;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+        }
+        .module-header .date-time {
+            color: #e0e0e0;
+            font-size: 12px;
+            margin-top: 5px;
+            text-shadow: 0 0 3px rgba(30, 144, 255, 0.3);
+        }
+
+        .progress {
+            width: 100%;
+            background: #0f0f1a;
+            height: 10px;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            border-radius: 8px;
+            width: 0;
+            box-shadow: 0 0 5px #1e90ff;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress::after {
+            content: 'Completion';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            font-size: 10px;
+            color: #00ffcc;
+            text-shadow: 0 0 3px #00ffcc;
+        }
+
+        .section {
+            background: rgba(22, 33, 62, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+        }
+        .section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .section p {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+            text-align: justify;
+        }
+        .section.active p {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .hamburger {
+                display: block;
+            }
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .module-header h1 {
+                font-size: 24px;
+            }
+            .module-header p {
+                font-size: 14px;
+            }
+            .module-header .date-time {
+                font-size: 10px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .section h2 {
+                font-size: 18px;
+            }
+            .section p {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .main-content.active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+            .module-header h1 {
+                font-size: 20px;
+            }
+            .module-header p {
+                font-size: 12px;
+            }
+            .module-header .date-time {
+                font-size: 9px;
+            }
+            .section {
+                padding: 12px;
+            }
+            .section h2 {
+                font-size: 16px;
+            }
+            .section p {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .module-header h1 {
+                font-size: 18px;
+            }
+            .module-header p {
+                font-size: 10px;
+            }
+            .module-header .date-time {
+                font-size: 8px;
+            }
+            .section {
+                padding: 10px;
+            }
+            .section h2 {
+                font-size: 14px;
+            }
+            .section p {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    
+    <div class="sidebar">
+        <h2>SSU Prime</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="active"><a href="reviewModules.html">Review Modules</a></li>
+            <li><a href="mockTest.html">Mock Tests</a></li>
+            <li><a href="index.html">Log Out</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <div class="main-content">
+        <div class="test-container">
+            <div class="module-header">
+                <h1>Expert Child Development</h1>
+                <p>Mastering stages and influences on child growth</p>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <p>Progress: <span id="progressPercent">0%</span></p>
+                <p class="date-time" id="dateTime">Loading...</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 1: Physical Development Milestones</h2>
+                <p>Physical development milestones are critical indicators of a child’s motor skill progression from infancy through adolescence. In the first year, infants develop gross motor skills such as rolling over by 4-6 months and crawling by 9 months, while fine motor skills like grasping objects emerge around 6 months. These milestones reflect neurological maturation, muscle coordination, and overall physical health, serving as a foundation for future growth. Parents and educators support this phase by providing safe play areas, age-appropriate toys, and opportunities for movement, which stimulate development and build strength.</p>
+                <p>As children transition into toddlerhood, they refine these skills, achieving milestones like walking independently between 12-18 months and using utensils or drawing simple shapes by age 2. Delays in reaching these stages may suggest underlying health issues such as muscular dystrophy or neurological conditions, prompting early intervention by specialists like pediatricians or physical therapists. School-aged children further enhance coordination through structured activities such as sports, writing, or playing musical instruments, with nutrition and regular exercise playing vital roles in boosting stamina and physical resilience.</p>
+                <p>During adolescence, puberty introduces significant changes, including increased height, muscle mass, and coordination, influenced by genetics and lifestyle. Monitoring these milestones with tools like growth charts and developmental checklists ensures timely support, allowing educators and parents to adapt environments to encourage physical activity. This ongoing attention fosters healthy development, preparing children for the physical demands of adulthood while addressing any delays with targeted interventions to support long-term well-being.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 2: Cognitive Development Stages</h2>
+                <p>Cognitive development stages, as defined by Jean Piaget, outline how children’s thinking evolves from birth through adolescence. The sensorimotor stage (0-2 years) centers on learning through sensory experiences and actions, with object permanence—the understanding that objects exist even when unseen—developing around 8 months. This stage lays the groundwork for memory and spatial awareness, as infants explore their environment through touch and movement, guided by instinct and caregiver interaction.</p>
+                <p>The preoperational stage (2-7 years) introduces symbolic play and language development, though it is limited by egocentrism, where children struggle to consider others’ perspectives. As they progress to the concrete operational stage (7-11 years), they gain the ability to reason about tangible objects and events, mastering concepts like conservation of volume or number through hands-on activities. Educators tailor lessons to these stages, using concrete examples for younger children and structured tasks to build logical thinking skills, adapting to individual learning paces.</p>
+                <p>The formal operational stage (12+ years) marks the emergence of abstract thinking and hypothesis testing, enabling adolescents to solve complex problems and plan for the future. Cognitive growth is enhanced by stimulating activities like puzzles, debates, or scientific experiments, influenced by cultural and environmental factors such as access to education. Understanding these stages allows educators to provide appropriate challenges and resources, ensuring children develop critical thinking skills essential for academic success and lifelong learning.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 3: Emotional and Social Growth</h2>
+                <p>Emotional and social growth begins in infancy with the formation of attachment to primary caregivers, typically solidifying by age 1, which fosters trust and emotional regulation. Secure bonds provide a safe base for exploring emotions, shaping self-esteem and the capacity for relationships, with responsive caregiving playing a pivotal role in early development. Preschoolers, around 3-4 years, start developing empathy, learning to share and cooperate with peers, while conflicts during play offer opportunities to practice negotiation and problem-solving under adult guidance.</p>
+                <p>Social learning theory underscores the influence of modeling, where children imitate behaviors observed from family, peers, or media, impacting their emotional responses and social norms. As school-aged children (6-12 years) form deeper friendships, group dynamics and peer acceptance become significant, enhancing their sense of belonging and emotional maturity. Challenges like bullying or rejection build resilience when supported by positive reinforcement and empathetic guidance from educators or parents, fostering a balanced emotional outlook.</p>
+                <p>Educators promote social skills through group activities, role-playing, and collaborative projects, while emotional growth is nurtured through discussions on feelings and coping strategies. Cultural context and family environment further shape this development, making it essential to create inclusive settings that support diverse emotional needs. This holistic approach ensures children develop the social competence and emotional stability necessary for healthy relationships and personal growth throughout life.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 4: Language Development</h2>
+                <p>Language development commences in infancy with cooing by 2-3 months, evolving into first words like “mama” or “dada” by 12 months, driven by exposure to a rich language environment. Caregivers play a crucial role by responding to vocalizations, reading aloud, and engaging in conversations, which boost vocabulary and auditory skills essential for early communication. This stage relies heavily on social interaction, with consistent language input laying the foundation for future linguistic growth and cognitive development.</p>
+                <p>Toddlers begin forming two-word phrases by age 2, such as “more milk,” and develop basic grammar by 3-4 years through storytelling, singing, and interactive play. Delays in this progression may indicate hearing impairments, cognitive challenges, or limited language exposure, necessitating professional assessment by speech therapists or audiologists to address potential barriers. Caregivers enhance development by providing a stimulating environment, encouraging expressive language and comprehension through daily routines and play.</p>
+                <p>School-aged children, from 6-7 years, refine literacy skills, writing sentences and reading simple texts, with peer interaction and formal education accelerating fluency and comprehension. Technology, such as language apps or educational videos, supports this growth by offering interactive practice, while bilingual environments enrich cognitive flexibility. Educators and parents foster development through consistent language-rich activities, ensuring strong communication skills that underpin academic success, social relationships, and professional opportunities in later life.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 5: Play and Learning</h2>
+                <p>Play and learning are fundamental to child development, starting with exploratory play in infancy where manipulating toys builds motor skills, curiosity, and cognitive foundations. This unstructured play, involving stacking blocks or banging objects, fosters creativity and problem-solving, providing a natural avenue for self-discovery and skill acquisition. Caregivers support this phase by offering safe, stimulating environments, allowing infants to experiment and learn through trial and error, which strengthens neural connections.</p>
+                <p>Preschoolers engage in imaginative play, such as role-playing as doctors or teachers around 3-5 years, enhancing social skills, emotional expression, and narrative abilities. Structured games with rules, like board games or team sports, teach cooperation and strategic thinking, guided by adults to ensure fair play and reinforce developmental goals. Play-based learning aligns with Piaget’s theories, integrating physical, cognitive, and social elements to support holistic growth, making it an effective educational strategy for young learners.</p>
+                <p>School-aged children benefit from educational games like math puzzles or science experiments, blending fun with skill-building, while outdoor play boosts physical health, coordination, and problem-solving through activities like tag or building forts. Educators integrate play into curricula using props or digital tools to maintain engagement, reinforcing academic concepts in a dynamic way. A supportive environment with diverse play opportunities ensures well-rounded development, preparing children for academic challenges and social interactions, fostering a lifelong love for learning and physical activity.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                    document.querySelector('.main-content').classList.remove('active');
+                    document.querySelector('.overlay').classList.remove('active');
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+
+        function toggleSection(section) {
+            section.classList.toggle('active');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const sections = document.querySelectorAll('.section');
+            const activeSections = document.querySelectorAll('.section.active');
+            const progressPercent = (activeSections.length / sections.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressPercent');
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `${Math.round(progressPercent)}%`;
+        }
+
+        // Dynamic Date and Time
+        function updateDateTime() {
+            const dateTimeElement = document.getElementById('dateTime');
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: 'America/Los_Angeles'
+            };
+            dateTimeElement.textContent = now.toLocaleString('en-US', options) + ' PST';
+        }
+        updateDateTime(); // Initial call
+        setInterval(updateDateTime, 1000); // Update every second
+
+        // Initial call to set progress if any sections are pre-active
+        updateProgress();
+    </script>
+</body>
+</html>

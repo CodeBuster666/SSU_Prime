@@ -1,0 +1,31 @@
+/* header.css */
+.university-header {
+    width: 100%;
+    background-color: #f8f9fa;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1001;
+}
+
+.university-header img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Ensure the main content adjusts for the header */
+.main-content {
+    margin-top: 60px; /* Adjust based on header height */
+}
+
+@media (max-width: 768px) {
+    .university-header img {
+        max-width: 90%;
+    }
+    .main-content {
+        margin-top: 50px; /* Adjust for mobile */
+    }
+}

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Quick Tips</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <style>
+    /* Reset and Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', 'Roboto', Arial, sans-serif;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        padding: 30px;
+        margin-left: 250px;
+        transition: margin-left 0.3s ease-in-out;
+        background: transparent;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        animation: fadeIn 0.5s ease;
+        position: relative;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Welcome Section */
+    .welcome {
+        text-align: center;
+        padding: 30px;
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-gradient);
+        opacity: 0.05;
+        z-index: -1;
+    }
+
+    .welcome h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text-primary);
+        animation: bounce 0.5s ease;
+    }
+
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-10px); }
+        60% { transform: translateY(-5px); }
+    }
+
+    .welcome p {
+        margin: 10px 0;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* Tips Section */
+    .tips {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 30px;
+    }
+
+    .tips:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .tips h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 15px;
+    }
+
+    .tip-content {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.5;
+        padding: 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .timestamp {
+        font-size: 12px;
+        color: var(--text-secondary);
+        margin-bottom: 15px;
+    }
+
+    button {
+        background-color: var(--primary);
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: var(--secondary);
+    }
+
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .main-content {
+            margin-left: 0;
+            padding: 20px;
+        }
+
+        .hamburger {
+            display: block;
+        }
+
+        .main-content.active {
+            filter: blur(2px);
+            pointer-events: none;
+        }
+
+        .tips {
+            padding: 15px;
+        }
+
+        .welcome h1 {
+            font-size: 24px;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .welcome h1 {
+            font-size: 20px;
+        }
+
+        .tips {
+            padding: 12px;
+        }
+
+        button {
+            padding: 8px 16px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>SSU Prime</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="reviewModules.html">Review Modules</a></li>
+            <li><a href="mockTest.html">Mock Tests</a></li>
+            <li class="active"><a href="QuickTips.html">Quick Tips</a></li>
+            <li><a href="index.html">Log Out</a></li>
+        </ul>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-container">
+            <div class="welcome">
+                <h1>Welcome to Quick Tips! 🌟</h1>
+                <p>Get daily insights to enhance your learning journey.</p>
+            </div>
+            <div class="tips">
+                <h3>Tip of the Day</h3>
+                <div class="tip-content" id="tipContent">Review your notes on Piaget’s cognitive stages from Educational Psychology to prepare for the next test!</div>
+                <div class="timestamp" id="timestamp">Last updated: 05:02 PM PST, Tuesday, June 24, 2025</div>
+                <button onclick="getNewTip()">Get New Tip</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        const tips = [
+            "Review your notes on Piaget’s cognitive stages from Educational Psychology to prepare for the next test!",
+            "Practice teaching methods by explaining a lesson plan to a friend to reinforce your skills!",
+            "Revisit Child Development milestones to improve your performance on the next mock test!",
+            "Use positive reinforcement techniques from your behavioral intervention questions during study breaks!",
+            "Adapt your study schedule based on curriculum adaptation strategies to cover weak areas!",
+            "Strengthen parent-teacher collaboration skills by role-playing a meeting scenario!",
+            "Test your knowledge of IEPs by creating a sample plan for a special education case!",
+            "Assess your understanding of developmental tools like the Bayley Scales with a timed quiz!",
+            "Summarize key teaching strategies after each module to boost retention for the Field Specialization Test!",
+            "Reflect on your mock test results to focus on areas like curriculum adaptation for better scores!"
+        ];
+
+        function getNewTip() {
+            const tipContent = document.getElementById('tipContent');
+            const timestamp = document.getElementById('timestamp');
+            const randomTip = tips[Math.floor(Math.random() * tips.length)];
+            tipContent.textContent = randomTip;
+            const now = new Date();
+            timestamp.textContent = `Last updated: ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}, ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('timestamp').textContent = `Last updated: ${now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}, ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`;
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

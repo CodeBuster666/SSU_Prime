@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Education Quest</title>
+    <link rel="stylesheet" href="css/sidebar.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            overflow-x: hidden;
+            text-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+        }
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 800px;
+            margin: 20px 0;
+            border: 2px solid #1e90ff;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(22, 33, 62, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
+        }
+        .header-section h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .progress {
+            width: 100%;
+            background: #0f0f1a;
+            height: 15px;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            border-radius: 8px;
+            width: 0%;
+            box-shadow: 0 0 10px #1e90ff;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress::after {
+            content: 'Progress';
+            position: absolute;
+            top: -20px;
+            left: 10px;
+            font-size: 12px;
+            color: #00ffcc;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .timer {
+            font-size: 20px;
+            color: #00ffcc;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .timer::before {
+            content: '⏳ ';
+        }
+        .question {
+            margin-bottom: 25px;
+            display: none;
+            background: rgba(22, 33, 62, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #1e90ff;
+        }
+        .question.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        .question h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #00ffcc;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .question p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+        .options {
+            margin-left: 20px;
+        }
+        .option {
+            margin: 12px 0;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+        }
+        .option input[type="radio"] {
+            margin-right: 12px;
+            cursor: pointer;
+            transform: scale(1.2);
+            accent-color: #1e90ff;
+        }
+        button {
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            color: #1a1a2e;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            width: 100%;
+            max-width: 250px;
+            margin: 15px auto;
+            display: block;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px #1e90ff;
+            position: relative;
+            overflow: hidden;
+        }
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ffcc;
+        }
+        button:hover::after {
+            width: 200px;
+            height: 200px;
+            margin-left: -100px;
+            margin-top: -100px;
+        }
+        .score-container {
+            display: none;
+            text-align: center;
+            padding: 25px;
+            background: rgba(22, 33, 62, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5);
+            border: 2px solid #00ffcc;
+        }
+        .score-container.active {
+            display: block;
+            animation: levelUp 0.5s ease-out;
+        }
+        .score-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px #00ffcc, 0 0 30px rgba(0, 255, 204, 0.5);
+        }
+        .score-container h2 {
+            font-size: 24px;
+            color: #00ffcc;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .score-container p {
+            font-size: 20px;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            text-shadow: 0 0 3px #e0e0e0;
+        }
+        .back-button {
+            background: linear-gradient(90deg, #28a745, #2ecc71);
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            box-shadow: 0 0 20px #2ecc71;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes levelUp {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .header-section h1 {
+                font-size: 28px;
+            }
+            .question h2 {
+                font-size: 20px;
+            }
+            .question p {
+                font-size: 14px;
+            }
+            .option {
+                font-size: 14px;
+            }
+            button {
+                max-width: 220px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .test-container {
+                width: 95%;
+                padding: 15px;
+            }
+            .header-section h1 {
+                font-size: 24px;
+            }
+            .timer {
+                font-size: 18px;
+            }
+            .question h2 {
+                font-size: 18px;
+            }
+            .question p {
+                font-size: 13px;
+            }
+            .option {
+                font-size: 13px;
+            }
+            button {
+                padding: 10px 25px;
+                font-size: 14px;
+                max-width: 200px;
+            }
+            .score-container {
+                padding: 20px;
+            }
+            .score-container h2 {
+                font-size: 20px;
+            }
+            .score-container p {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .header-section h1 {
+                font-size: 20px;
+            }
+            .timer {
+                font-size: 16px;
+            }
+            .question h2 {
+                font-size: 16px;
+            }
+            .question p {
+                font-size: 12px;
+            }
+            .option {
+                font-size: 12px;
+            }
+            button {
+                padding: 8px 20px;
+                font-size: 12px;
+                max-width: 150px;
+            }
+            .score-container {
+                padding: 15px;
+            }
+            .score-container h2 {
+                font-size: 18px;
+            }
+            .score-container p {
+                font-size: 14px;
+            }
+            .progress {
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header-section">
+            <h1>Professional Education Quest</h1>
+        </div>
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="timer" id="timer">Time Remaining: 1:00</div>
+        <div class="question active" id="q1">
+            <h2>Question 1 of 5</h2>
+            <p>What is the primary focus of curriculum development?</p>
+            <div class="options">
+                <div class="option"><input type="radio" name="q1" value="a"> a) Student assessment</div>
+                <div class="option"><input type="radio" name="q1" value="b"> b) Learning objectives</div>
+                <div class="option"><input type="radio" name="q1" value="c"> c) Teacher training</div>
+                <div class="option"><input type="radio" name="q1" value="d"> d) Classroom design</div>
+            </div>
+        </div>
+        <div class="question" id="q2">
+            <h2>Question 2 of 5</h2>
+            <p>Which teaching strategy promotes critical thinking?</p>
+            <div class="options">
+                <div class="option"><input type="radio" name="q2" value="a"> a) Lecture</div>
+                <div class="option"><input type="radio" name="q2" value="b"> b) Socratic method</div>
+                <div class="option"><input type="radio" name="q2" value="c"> c) Drill and practice</div>
+                <div class="option"><input type="radio" name="q2" value="d"> d) Direct instruction</div>
+            </div>
+        </div>
+        <div class="question" id="q3">
+            <h2>Question 3 of 5</h2>
+            <p>What does formative assessment aim to do?</p>
+            <div class="options">
+                <div class="option"><input type="radio" name="q3" value="a"> a) Final grading</div>
+                <div class="option"><input type="radio" name="q3" value="b"> b) Monitor progress</div>
+                <div class="option"><input type="radio" name="q3" value="c"> c) Rank students</div>
+                <div class="option"><input type="radio" name="q3" value="d"> d) Assign homework</div>
+            </div>
+        </div>
+        <div class="question" id="q4">
+            <h2>Question 4 of 5</h2>
+            <p>Which of these is a key principle of inclusive education?</p>
+            <div class="options">
+                <div class="option"><input type="radio" name="q4" value="a"> a) Segregation</div>
+                <div class="option"><input type="radio" name="q4" value="b"> b) Equal access</div>
+                <div class="option"><input type="radio" name="q4" value="c"> c) Standardized testing</div>
+                <div class="option"><input type="radio" name="q4" value="d"> d) Elite selection</div>
+            </div>
+        </div>
+        <div class="question" id="q5">
+            <h2>Question 5 of 5</h2>
+            <p>What is the role of a professional learning community?</p>
+            <div class="options">
+                <div class="option"><input type="radio" name="q5" value="a"> a) Individual teaching</div>
+                <div class="option"><input type="radio" name="q5" value="b"> b) Collaborative growth</div>
+                <div class="option"><input type="radio" name="q5" value="c"> c) Administrative tasks</div>
+                <div class="option"><input type="radio" name="q5" value="d"> d) Student counseling</div>
+            </div>
+        </div>
+        <div class="score-container" id="score-container">
+            <div class="score-icon" id="score-icon"></div>
+            <h2>Your Score</h2>
+            <p id="score-text"></p>
+            <button class="back-button" onclick="goToDashboard()">Return to Hub</button>
+        </div>
+        <button onclick="nextQuestion()">Next Level</button>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        let timeLeft = 60; // 60 seconds per question
+        const timerDisplay = document.getElementById('timer');
+        const progressBar = document.getElementById('progressBar');
+        const scoreContainer = document.getElementById('score-container');
+        const scoreIcon = document.getElementById('score-icon');
+        const scoreText = document.getElementById('score-text');
+
+        // Define correct answers
+        const correctAnswers = {
+            q1: 'b', // Learning objectives
+            q2: 'b', // Socratic method
+            q3: 'b', // Monitor progress
+            q4: 'b', // Equal access
+            q5: 'b'  // Collaborative growth
+        };
+
+        function updateTimer() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft <= 0) {
+                alert("Time's up! Moving to the next level!");
+                nextQuestion();
+            }
+            timeLeft--;
+        }
+
+        let timerInterval = setInterval(updateTimer, 1000);
+
+        function nextQuestion() {
+            clearInterval(timerInterval); // Stop the current timer
+            const current = document.getElementById(`q${currentQuestion}`);
+            current.classList.remove('active');
+            currentQuestion++;
+            if (currentQuestion <= 5) {
+                const next = document.getElementById(`q${currentQuestion}`);
+                next.classList.add('active');
+                updateProgress((currentQuestion - 1) / 5 * 100); // Update progress bar
+                timeLeft = 60; // Reset timer to 60 seconds
+                timerInterval = setInterval(updateTimer, 1000); // Restart timer
+            } else {
+                clearInterval(timerInterval); // Stop timer at the end
+                calculateScore();
+                scoreContainer.classList.add('active');
+                document.querySelector('button[onclick="nextQuestion()"]').style.display = 'none'; // Hide Next button
+                updateProgress(100); // Set progress to 100% on completion
+            }
+        }
+
+        function calculateScore() {
+            let score = 0;
+            for (let q in correctAnswers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === correctAnswers[q]) {
+                    score++;
+                }
+            }
+            const percentage = Math.round((score / 5) * 100);
+            scoreText.textContent = `Score: ${score}/5 (${percentage}%)`;
+            scoreIcon.textContent = percentage >= 60 ? '⭐' : '💀'; // Star for 60%+, skull otherwise
+            // Store score in localStorage for the specific test (prof-ed-2)
+            localStorage.setItem('bestScore_prof-ed-2', percentage);
+        }
+
+        function updateProgress(percentage = 0) {
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        function goToDashboard() {
+            const scoreTextContent = document.getElementById('score-text').textContent;
+            const score = parseInt(scoreTextContent.split('/')[0].split(' ')[1]); // Extract score (e.g., "4" from "Score: 4/5")
+            const percentage = Math.round((score / 5) * 100); // Convert to percentage
+            // Redirect back to mockTest.html with the score as a query parameter
+            window.location.href = `mockTest.html?test=prof-ed-2&score=${percentage}`;
+        }
+    </script>
+</body>
+</html>

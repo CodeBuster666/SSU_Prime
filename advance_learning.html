@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Advanced Teaching Methods</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Hamburger Menu Button */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: #fff;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
+            background-color: #f0f0f0;
+            color: #1e90ff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
+            width: calc(100% - 250px);
+        }
+
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .module-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+        .module-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .module-header p {
+            color: #e0e0e0;
+            margin-top: 10px;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+        }
+        .module-header .date-time {
+            color: #e0e0e0;
+            font-size: 12px;
+            margin-top: 5px;
+            text-shadow: 0 0 3px rgba(30, 144, 255, 0.3);
+        }
+
+        .progress {
+            width: 100%;
+            background: #0f0f1a;
+            height: 10px;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e90ff, #00ffcc);
+            border-radius: 8px;
+            width: 0;
+            box-shadow: 0 0 5px #1e90ff;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress::after {
+            content: 'Completion';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            font-size: 10px;
+            color: #00ffcc;
+            text-shadow: 0 0 3px #00ffcc;
+        }
+
+        .section {
+            background: rgba(22, 33, 62, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+        }
+        .section h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00ffcc;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .section p {
+            color: #e0e0e0;
+            font-size: 14px;
+            line-height: 1.6;
+            display: none;
+            text-align: justify;
+        }
+        .section.active p {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .hamburger {
+                display: block;
+            }
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .module-header h1 {
+                font-size: 24px;
+            }
+            .module-header p {
+                font-size: 14px;
+            }
+            .module-header .date-time {
+                font-size: 10px;
+            }
+            .section {
+                padding: 15px;
+            }
+            .section h2 {
+                font-size: 18px;
+            }
+            .section p {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .main-content {
+                padding: 20px;
+            }
+            .main-content.active {
+                filter: blur(2px);
+                pointer-events: none;
+            }
+            .module-header h1 {
+                font-size: 20px;
+            }
+            .module-header p {
+                font-size: 12px;
+            }
+            .module-header .date-time {
+                font-size: 9px;
+            }
+            .section {
+                padding: 12px;
+            }
+            .section h2 {
+                font-size: 16px;
+            }
+            .section p {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .module-header h1 {
+                font-size: 18px;
+            }
+            .module-header p {
+                font-size: 10px;
+            }
+            .module-header .date-time {
+                font-size: 8px;
+            }
+            .section {
+                padding: 10px;
+            }
+            .section h2 {
+                font-size: 14px;
+            }
+            .section p {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    
+    <div class="sidebar">
+        <h2>SSU Prime</h2>
+        <ul>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li class="active"><a href="reviewModules.html">Review Modules</a></li>
+            <li><a href="mockTest.html">Mock Tests</a></li>
+            <li><a href="index.html">Log Out</a></li>
+        </ul>
+    </div>
+
+    <div class="overlay" onclick="toggleMenu()"></div>
+
+    <div class="main-content">
+        <div class="test-container">
+            <div class="module-header">
+                <h1>Advanced Teaching Methods</h1>
+                <p>Exploring innovative techniques for effective instruction</p>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <p>Progress: <span id="progressPercent">0%</span></p>
+                <p class="date-time" id="dateTime">Loading...</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 1: Active Learning Methods</h2>
+                <p>Active learning methods engage students through active participation rather than passive listening, transforming the classroom into a dynamic space. Techniques such as think-pair-share encourage discussion and collaboration, enabling students to process ideas together and develop critical thinking skills. This approach enhances retention by involving learners directly in the educational process, fostering a deeper understanding of complex concepts through peer interaction and shared problem-solving.</p>
+                <p>Hands-on activities, including experiments, role-playing, or group projects, reinforce theoretical knowledge through practical experience, making learning more tangible and memorable. Teachers play a crucial role by providing clear instructions, necessary resources, and guidance to ensure all students contribute equitably, creating an inclusive environment. Rooted in Constructivist principles, active learning promotes a student-centered classroom that encourages exploration and adaptability, aligning with modern educational goals of fostering independent thought.</p>
+                <p>Technology further enhances active learning by integrating interactive tools like online polls, virtual simulations, or collaborative platforms, which keep students motivated and engaged. These digital resources facilitate peer interaction and provide immediate feedback, though educators must monitor participation to ensure inclusivity and address diverse learning needs. As a versatile teaching strategy, active learning prepares students for real-world challenges, equipping them with skills like teamwork, critical analysis, and self-directed learning that are essential for future success.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 2: Direct Instruction Techniques</h2>
+                <p>Direct instruction techniques involve structured, teacher-led lessons designed to deliver content efficiently and consistently to students. The lecture method, supported by clear explanations, examples, and visual aids, is particularly effective for large groups, ensuring all learners receive the same foundational knowledge. This approach excels in teaching core skills and concepts, providing a solid base for further exploration and application in various subjects.</p>
+                <p>Demonstrations and guided practice follow lectures, allowing students to apply newly acquired knowledge under the teacher’s supervision, with modeling techniques showcasing processes step-by-step. Immediate feedback helps correct errors and builds confidence through repetition, a principle rooted in Behaviorism that emphasizes observable outcomes. This structured guidance is especially beneficial for students needing clear direction, ensuring they master essential skills before advancing to more complex tasks.</p>
+                <p>Assessment tools, such as quick quizzes or oral questions during direct instruction, gauge student understanding and allow teachers to adjust pacing or revisit topics as needed. While highly effective for delivering structured content, over-reliance on this method may limit creativity and critical thinking, necessitating a balanced integration with other approaches. By combining direct instruction with interactive elements, educators can optimize learning outcomes, catering to diverse student needs and fostering a comprehensive educational experience.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 3: Cooperative Learning Strategies</h2>
+                <p>Cooperative learning strategies promote teamwork to enhance academic and social outcomes, creating a collaborative classroom environment. Group projects assign specific roles to students, encouraging accountability, communication, and peer support, which are vital skills in diverse educational settings. This method leverages collective effort to deepen understanding, making learning a shared responsibility that mirrors real-world collaborative challenges.</p>
+                <p>The jigsaw technique divides topics among group members, requiring each to master a segment and teach it to others, fostering interdependence and active participation. Teachers facilitate this process by setting clear goals, monitoring progress, and ensuring equitable contribution, which builds social skills alongside academic growth. This structured collaboration helps students develop empathy, leadership, and problem-solving abilities, enriching their overall educational experience.</p>
+                <p>Reflection sessions after activities allow students to evaluate their contributions and learn from the process, while technology, such as shared online platforms, enhances coordination and resource access. Cooperative learning improves critical thinking and prepares students for professional environments where teamwork is essential, establishing it as a powerful teaching tool. Educators must guide these interactions to maintain focus and inclusivity, ensuring all students benefit from this interactive approach.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 4: Inquiry-Based Teaching</h2>
+                <p>Inquiry-based teaching encourages students to explore questions and solve problems independently, cultivating a sense of curiosity and ownership in their learning. Open-ended projects prompt learners to research, hypothesize, and experiment, with teachers acting as facilitators rather than primary knowledge providers. This student-centered approach fosters critical thinking and self-directed learning, aligning with the demands of a rapidly evolving world.</p>
+                <p>The scientific method provides a structured framework, guiding students through observation, questioning, experimentation, and conclusion-drawing, with teachers offering resources and posing challenging questions. This method reflects Constructivist principles, emphasizing active discovery over passive absorption, and requires educators to scaffold activities to support varying skill levels. By encouraging exploration, it builds resilience and problem-solving skills essential for academic and personal growth.</p>
+                <p>Technology, including virtual labs and online databases, enhances inquiry-based learning by providing safe, accessible platforms for experimentation and research. Teachers assess progress through presentations, reports, or portfolios, ensuring a deep understanding of concepts while offering constructive feedback. Though this approach demands careful planning and support, it develops lifelong learning skills, preparing students for complex challenges and fostering a passion for knowledge acquisition.</p>
+            </div>
+            <div class="section" onclick="toggleSection(this)">
+                <h2>Section 5: Differentiated Instruction Approaches</h2>
+                <p>Differentiated instruction adapts teaching methods to meet the diverse needs of students, ensuring an inclusive and effective learning environment. Varied assignments, such as tiered tasks or flexible projects, cater to different ability levels and learning preferences, with teachers assessing readiness to tailor content accordingly. This approach promotes equity by addressing individual strengths and challenges, making education accessible to all learners.</p>
+                <p>Flexible grouping rotates students based on interests, strengths, or learning styles, encouraging peer learning and collaboration while keeping the classroom dynamic. Teachers employ multiple instructional styles—visual aids, auditory lectures, or kinesthetic activities—to engage every student, requiring ongoing observation to adjust strategies and maintain engagement. This adaptability ensures that lessons resonate with diverse cultural and cognitive backgrounds, enhancing overall comprehension.</p>
+                <p>Technology, such as adaptive learning software or interactive platforms, further personalizes education by adjusting content to individual progress, while offering students choices in projects boosts motivation and ownership. By integrating these tools, educators can address varied learning paces and needs, aligning with modern educational demands for inclusivity and effectiveness. Differentiated instruction ultimately fosters a supportive classroom culture, equipping students with the skills to succeed in diverse academic and professional settings.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                    document.querySelector('.main-content').classList.remove('active');
+                    document.querySelector('.overlay').classList.remove('active');
+                }
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+
+        function toggleSection(section) {
+            section.classList.toggle('active');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const sections = document.querySelectorAll('.section');
+            const activeSections = document.querySelectorAll('.section.active');
+            const progressPercent = (activeSections.length / sections.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressPercent');
+            progressBar.style.width = `${progressPercent}%`;
+            progressText.textContent = `${Math.round(progressPercent)}%`;
+        }
+
+        // Dynamic Date and Time
+        function updateDateTime() {
+            const dateTimeElement = document.getElementById('dateTime');
+            const now = new Date();
+            const options = {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: 'America/Los_Angeles'
+            };
+            dateTimeElement.textContent = now.toLocaleString('en-US', options) + ' PST';
+        }
+        updateDateTime(); // Initial call
+        setInterval(updateDateTime, 1000); // Update every second
+
+        // Initial call to set progress if any sections are pre-active
+        updateProgress();
+    </script>
+</body>
+</html>

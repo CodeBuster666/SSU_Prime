@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSU Prime - Mock Tests</title>
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color:#648db6;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar ul li a:hover,
+        .sidebar ul li.active a {
+            background-color: #f0f0f0;
+            color: #1e90ff;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: margin-left 0.3s ease-in-out;
+            width: calc(100% - 250px);
+        }
+
+        .test-container {
+            background: rgba(26, 26, 46, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(30, 144, 255, 0.5), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .test-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 10s infinite;
+            z-index: 0;
+        }
+        .test-container > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ffcc, 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .header .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .header input {
+            padding: 8px;
+            width: 200px;
+            border: 1px solid #1e90ff;
+            border-radius: 10px;
+            background: rgba(22, 33, 62, 0.7);
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: box-shadow 0.3s ease;
+        }
+        .header input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+        }
+        .header select {
+            padding: 8px;
+            border: 1px solid #1e90ff;
+            border-radius: 10px;
+            background: rgba(22, 33, 62, 0.7);
+            color: #e0e0e0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease;
+        }
+        .header select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(30, 144, 255, 0.5);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 15px 0;
+        }
+
+        .card {
+            background: rgba(22, 33, 62, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.5);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+        }
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00ffcc;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px #00ffcc;
+        }
+        .card p {
+            color: #e0e0e0;
+            font-size: 13px;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        .progress {
+            width: 100%;
+            height: 10px;
+            background: #0f0f1a;
+            border: 2px solid #1e90ff;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #1e90ff, #00b4db);
+            border-radius: 8px;
+            width: 0;
+            box-shadow: 0 0 5px #1e90ff;
+            transition: width 0.5s ease-in-out;
+        }
+        .progress::after {
+            content: 'Completion';
+            position: absolute;
+            top: -15px;
+            left: 10px;
+            font-size: 10px;
+            color: #00ffcc;
+            text-shadow: 0 0 3px #00ffcc;
+        }
+        .btn {
+            background: linear-gradient(90deg, #1e90ff, #00b4db);
+            color: #1a1a2e;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: inline-block;
+            text-transform: uppercase;
+            font-weight: 600;
+            box-shadow: 0 0 10px #1e90ff;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.4s ease, height 0.4s ease;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00b4db;
+        }
+        .btn:hover::after {
+            width: 200px;
+            height: 200px;
+            margin-left: -100px;
+            margin-top: -100px;
+        }
+
+        /* Overlay */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .hamburger {
+                display: block;
+            }
+            .test-container {
+                max-width: 700px;
+                padding: 20px;
+            }
+            .header h2 {
+                font-size: 24px;
+            }
+            .header .controls input,
+            .header .controls select {
+                width: 180px;
+            }
+            .card {
+                padding: 12px;
+            }
+            .card h3 {
+                font-size: 16px;
+            }
+            .card p {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar.active {
+                transform: translateX(0);
+                box-shadow: 4px 0 12px rgba(0, 0, 0, 0.2);
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .main-content.active {
+                filter: blur(5px);
+                pointer-events: none;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header .controls {
+                width: 100%;
+            }
+            .header .controls input,
+            .header .controls select {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .card {
+                padding: 10px;
+            }
+            .card h3 {
+                font-size: 14px;
+            }
+            .card p {
+                font-size: 11px;
+            }
+            .btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .test-container {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+            }
+            .header h2 {
+                font-size: 20px;
+            }
+            .header .controls input,
+            .header .controls select {
+                width: 100%;
+                padding: 6px;
+            }
+            .card {
+                margin-bottom: 10px;
+            }
+            .progress {
+                height: 8px;
+            }
+            .card h3 {
+                font-size: 12px;
+            }
+            .card p {
+                font-size: 10px;
+            }
+            .btn {
+                padding: 4px 10px;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hamburger Menu Button -->
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>SSU Prime</h2>
+            <ul>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="reviewModules.html">Review Modules</a></li>
+                <li class="active"><a href="mockTest.html">Mock Tests</a></li>
+                <li><a href="index.html">Log Out</a></li>
+            </ul>
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" onclick="toggleMenu()"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="test-container">
+                <div class="header">
+                    <h2>Mock Tests</h2>
+                    <div class="controls">
+                        <select>
+                            <option value="">All Tests</option>
+                            <option value="general">General Education</option>
+                            <option value="professional">Professional Education</option>
+                            <option value="field">Field Specialization</option>
+                        </select>
+                        <select>
+                            <option value="latest">Sort by: Latest</option>
+                            <option value="highest">Sort by: Highest Score</option>
+                            <option value="duration">Sort by: Duration</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid">
+                    <div class="card" data-test-id="gen-ed-1">
+                        <h3>General Education Test 1</h3>
+                        <p>5 questions | 1 minute duration</p>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <p>Best Score: <span id="gen-ed-1-score">0%</span></p>
+                        <a href="general_education_test.html" class="btn" onclick="event.preventDefault(); startTest('gen-ed-1', 5)">Start Test</a>
+                    </div>
+                    <div class="card" data-test-id="prof-ed-2">
+                        <h3>Professional Education Test 2</h3>
+                        <p>5 questions | 1 minute duration</p>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <p>Best Score: <span id="prof-ed-2-score">0%</span></p>
+                        <a href="professional_education_test.html" class="btn" onclick="event.preventDefault(); startTest('prof-ed-2', 5)">Start Test</a>
+                    </div>
+                    <div class="card" data-test-id="field-spec-1">
+                        <h3>Field Specialization Test 1</h3>
+                        <p>5 questions | 1 minute duration</p>
+                        <div class="progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                        <p>Best Score: <span id="field-spec-1-score">0%</span></p>
+                        <a href="field_specialization_test.html" class="btn" onclick="event.preventDefault(); startTest('field-spec-1', 5)">Start Test</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const mainContent = document.querySelector('.main-content');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1024) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('active');
+                document.querySelector('.overlay').classList.remove('active');
+            }
+        });
+
+        // Initialize progress bars based on best scores
+        function initializeProgressBars() {
+            document.querySelectorAll('.card').forEach(card => {
+                const testId = card.getAttribute('data-test-id');
+                const scoreElement = document.getElementById(`${testId}-score`);
+                const progressBar = card.querySelector('.progress-bar');
+                let progress = 0;
+
+                if (scoreElement.textContent !== 'Not taken') {
+                    progress = parseInt(scoreElement.textContent) || 0; // Ensure valid integer, default to 0 if parsing fails
+                }
+                progressBar.style.width = `${progress}%`;
+                progressBar.style.transition = 'width 0.5s ease-in-out';
+            });
+        }
+
+        function startTest(testId, totalQuestions) {
+            // Redirect to the appropriate test page based on testId
+            let testPage = '';
+            switch (testId) {
+                case 'gen-ed-1':
+                    testPage = 'general_education_test.html';
+                    break;
+                case 'prof-ed-2':
+                    testPage = 'professional_education_test.html';
+                    break;
+                case 'field-spec-1':
+                    testPage = 'field_specialization_test.html';
+                    break;
+                default:
+                    testPage = 'general_education_test.html'; // Default fallback
+            }
+            window.location.href = `${testPage}?test=${testId}&total=${totalQuestions}`;
+        }
+
+        // Function to update best score and progress bar
+        function updateBestScore(testId, newScore) {
+            let bestScore = localStorage.getItem(`bestScore_${testId}`);
+            if (!bestScore || newScore > parseInt(bestScore)) {
+                localStorage.setItem(`bestScore_${testId}`, newScore);
+                bestScore = newScore;
+            }
+
+            const scoreElement = document.getElementById(`${testId}-score`);
+            const progressBar = document.querySelector(`[data-test-id="${testId}"] .progress-bar`);
+            if (scoreElement && progressBar) {
+                scoreElement.textContent = bestScore !== null ? `${bestScore}%` : 'Not taken';
+                const progress = (bestScore !== null && scoreElement.textContent !== 'Not taken') ? parseInt(bestScore) : 0;
+                progressBar.style.width = `${progress}%`;
+                progressBar.style.transition = 'width 0.5s ease-in-out';
+            }
+        }
+
+        // Check for score parameter on page load
+        window.addEventListener('load', () => {
+            initializeProgressBars(); // Initialize progress bars on load
+            const urlParams = new URLSearchParams(window.location.search);
+            const testId = urlParams.get('test');
+            const score = urlParams.get('score');
+            if (testId && score) {
+                updateBestScore(testId, parseInt(score));
+            }
+
+            // Initialize best scores from localStorage
+            document.querySelectorAll('.card').forEach(card => {
+                const testId = card.getAttribute('data-test-id');
+                const initialScore = localStorage.getItem(`bestScore_${testId}`);
+                if (initialScore !== null) {
+                    updateBestScore(testId, parseInt(initialScore));
+                }
+            });
+        });
+    </script>
+</body>
+</html>
