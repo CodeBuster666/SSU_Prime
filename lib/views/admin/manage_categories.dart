@@ -1,9 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ssu_prime/models/category.dart';
+import 'package:ssu_prime/views/admin/manage_quizzes.dart';
+import 'add_category.dart';
 
 class ManageCategories extends StatefulWidget {
-  const ManageCategories({super.key});
+  
+  const ManageCategories({
+    super.key,
+  });
 
   @override
   State<ManageCategories> createState() => _ManageCategoriesState();
@@ -26,14 +31,12 @@ class _ManageCategoriesState extends State<ManageCategories> {
         actions: [
           IconButton(
             onPressed: (){
-
-              /*
-              Navigator.push(context,
-                MaterialPageRoute(builder: (builder) =>
-                    AddCategoryScreen(),),
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder:
+                    (builder) => AddCategory(),
+                ),
               );
-              */
-
             },
             icon: Icon(
               Icons.add_circle_outline,
@@ -43,7 +46,7 @@ class _ManageCategoriesState extends State<ManageCategories> {
         ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("categories").orderBy('name').snapshots(),
+        stream: _firestore.collection('categories').orderBy('name').snapshots(),
         builder:
             (context, snapshot) {
             if(snapshot.hasError) {
@@ -84,12 +87,12 @@ class _ManageCategoriesState extends State<ManageCategories> {
                       SizedBox(height: 8),
                       ElevatedButton(
                         onPressed: (){
-                            /*
-                            Navigator.push(context,
-                              MaterialPageRoute(builder: builder) =>
-                            );
-                            
-                             */
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddCategory(),
+                            ),
+                          );
                         },
                         child: Text("Add Category"),
                       ),
@@ -161,11 +164,14 @@ class _ManageCategoriesState extends State<ManageCategories> {
                       },
                     ),
                     onTap: (){
-                      /*
+
                       Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                         ManageQuizzes(
+                           categoryId: category.id,
+                           categoryName: category.name,
+                         ),
                       ));
 
-                       */
                     },
                   ),
                 );
@@ -175,12 +181,50 @@ class _ManageCategoriesState extends State<ManageCategories> {
       ),
     );
   }
+
+  // The Decision Logic for Deleting a Category
   Future<void> _handleCategoryAction(BuildContext context, String action, Category category) async {
     if (action == "edit") {
-      //Navigator.push(context, MaterialPageRoute(builder: (context) => QuizList(categoryId: category))
+      Navigator.push(context,
+        MaterialPageRoute(
+          builder: (context) => AddCategory(category: category),
+        ),
+      );
     }else if (
     action == "delete") {
-      await _firestore.collection("categories").doc(category.id).delete();
+      final confirm = await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Delete Category"),
+          content: Text("Are you sure you want to delete this cateagory?"),
+          actions: [
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context, false);
+                },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context, true);
+                },
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+            ),
+          ]
+        ),
+      );
+
+      if(confirm == true){
+        await _firestore.collection("categories").doc(category.id).delete();
+      }
     }
   }
+
+  // Category Statistics Logic
+
 }

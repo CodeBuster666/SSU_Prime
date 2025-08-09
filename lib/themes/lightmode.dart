@@ -62,6 +62,6 @@ ThemeData lightMode = ThemeData(
   ),
 
   hintColor: const Color(0xFF9E9E9E), // Light Grey
-  highlightColor: const Color(0xFF64B5F6), // Sky Blue
-  hoverColor: const Color(0xFF1565C0),// Darker Blue
+  highlightColor: const Color(0xFF1565C0), // Sky Blue
+  hoverColor: const Color(0xFF64B5F6)//0xFF1565C0),// Darker Blue
 );

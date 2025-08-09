@@ -22,10 +22,10 @@ class DesktopScaffold extends StatefulWidget {
 }
 
 class _DesktopScaffoldState extends State<DesktopScaffold> {
+
+  // Build UI
   @override
   Widget build(BuildContext context) {
-
-    // Build UI
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
 

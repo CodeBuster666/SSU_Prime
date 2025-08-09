@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ssu_prime/responsive/desktop_scaffold.dart';
-import 'package:ssu_prime/services/auth/auth_gate.dart';
+// import 'package:ssu_prime/responsive/desktop_scaffold.dart';
+// import 'package:ssu_prime/services/auth/auth_gate.dart';
 import 'package:ssu_prime/themes/theme_provider.dart';
 import 'package:ssu_prime/views/admin/admin_home_page.dart';
-import 'package:ssu_prime/views/login_page.dart';
-import 'package:ssu_prime/views/profile_page.dart';
+// import 'package:ssu_prime/views/login_page.dart';
+// import 'package:ssu_prime/views/profile_page.dart';
 import 'firebase_options.dart';
 
 
@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: Provider.of<ThemeProvider>(context).themeData,
       home: AdminHomePage(),
+
       /*
       initialRoute: '/auth',
         routes: {
@@ -52,6 +53,8 @@ class MyApp extends StatelessWidget {
       },
 
        */
+
+
     );
   }
 }

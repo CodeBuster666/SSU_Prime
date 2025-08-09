@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ssu_prime/responsive/desktop_scaffold.dart';
+import 'package:ssu_prime/views/admin/admin_home_page.dart';
 import 'package:ssu_prime/views/leaderboard_page.dart';
 import 'package:ssu_prime/views/login_page.dart';
 import 'package:ssu_prime/views/mock_test_page.dart';
@@ -30,11 +31,9 @@ var myAppBar = AppBar(
 
 class MyDrawer extends StatelessWidget {
 
-
   MyDrawer({
   super.key,
   });
-
 
   // Access Authentication Service
   final _auth = AuthService();
@@ -44,13 +43,13 @@ class MyDrawer extends StatelessWidget {
     _auth.logout();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
+    final isDesktop = MediaQuery.of(context).size.width > 600;
     // const Drawer
     return Drawer(
       backgroundColor: Colors.white,
+      width: isDesktop ? 280 : 250,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0),
         child: Column(
@@ -68,7 +67,7 @@ class MyDrawer extends StatelessWidget {
                   "SSU Prime",
                 style: TextStyle(
                   color: Theme.of(context).textTheme.headlineMedium?.color,
-                  fontSize: 20,
+                  fontSize: isDesktop ? 28 : 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -89,6 +88,7 @@ class MyDrawer extends StatelessWidget {
             DrawerTile(
               title: "Dashboard",
               icon: Icons.dashboard,
+              //hoverColor: Theme.of(context).hoverColor
               onTap: () {
                 // Pop Menu Drawer
                 Navigator.pop(context);
@@ -140,7 +140,7 @@ class MyDrawer extends StatelessWidget {
               },
             ),
 
-            //Leadersboard List Tile
+            // Leaderboard List Tile
             DrawerTile(
               title: "Leadersboard",
               icon: Icons.leaderboard,
@@ -158,7 +158,7 @@ class MyDrawer extends StatelessWidget {
               },
             ),
 
-            //Leadersboard List Tile
+            // Community List Tile
             DrawerTile(
               title: "Community",
               icon: Icons.people_sharp,
@@ -176,7 +176,7 @@ class MyDrawer extends StatelessWidget {
               },
             ),
 
-            //Schedule List Tile
+            // Schedule List Tile
             DrawerTile(
               title: "Schedule",
               icon: Icons.calendar_today,
@@ -194,7 +194,7 @@ class MyDrawer extends StatelessWidget {
               },
             ),
 
-            //Settings List Tile
+            // Settings List Tile
             DrawerTile(
               title: "Settings",
               icon: Icons.settings,
@@ -202,12 +202,29 @@ class MyDrawer extends StatelessWidget {
                 // Pop menu drawer
                 Navigator.pop(context);
 
-
                 // Go to Settings Page
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => SettingPage(),
+                  ),
+                );
+              }, // OnTap
+            ),
+
+            // Admin List Tile
+            DrawerTile(
+              title: "Admin",
+              icon: Icons.admin_panel_settings,
+              onTap: () {
+                // Pop menu drawer
+                Navigator.pop(context);
+
+                // Go to Settings Page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AdminHomePage(),
                   ),
                 );
               }, // OnTap

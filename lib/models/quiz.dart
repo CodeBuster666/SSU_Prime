@@ -1,9 +1,9 @@
 import 'package:ssu_prime/models/question.dart';
 
-class Quiz{
-  final String id;
+class Quiz {
+  final String? id;
   final String title;
-  final String categoryId;
+  final String? categoryId; // Single field for category ID
   final int timeLimit;
   final List<Question> questions;
   final DateTime? createdAt;
@@ -12,51 +12,57 @@ class Quiz{
   Quiz({
     required this.id,
     required this.title,
-    required this.categoryId,
+    this.categoryId,
     required this.timeLimit,
     required this.questions,
     this.createdAt,
     this.updatedAt,
   });
 
-  factory Quiz.fromMap(String id, Map<String, dynamic> map){
+  factory Quiz.fromMap(String id, Map<String, dynamic> map) {
     return Quiz(
       id: id,
       title: map['title'] ?? "",
-      categoryId: map['categoryId'] ?? "",
+      categoryId: map['categoryId'] ?? "", // Use categoryId from Firestore
       timeLimit: map['timeLimit'] ?? 0,
-      questions: ((map['questions'] ?? []) as List)
-          .map((e) => Question.fromMap(e))
+      questions: (map['questions'] as List<dynamic>? ?? [])
+          .map((e) => Question.fromMap(e as Map<String, dynamic>))
           .toList(),
       createdAt: map['createdAt']?.toDate(),
       updatedAt: map['updatedAt']?.toDate(),
     );
   }
 
-  Map<String, dynamic> toMap(){
-    return{
-      'title' : title,
-      'category' : categoryId,
-      'timeLimit' : timeLimit,
-      'questions' : questions.map((e) => e.toMap()).toList(),
-      'updatedAt' : DateTime.now(),
+  Map<String, dynamic> toMap({bool isUpdate = false}) {
+    return {
+      'title': title,
+      'categoryId': categoryId, // Use categoryId as the single field
+      'timeLimit': timeLimit,
+      'questions': questions.map((e) => e.toMap()).toList(),
+      if(isUpdate) 'updatedAt' : DateTime.now(),
+      'createdAt' : createdAt,
+      // 'updatedAt': DateTime.now(),
+      // 'createdAt' : DateTime.now(),
     };
   }
 
   Quiz copyWith({
+    String? id,
     String? title,
-    String? category,
+    String? categoryId, // Use categoryId consistently
     int? timeLimit,
     List<Question>? questions,
-}){
+    DateTime? createdAt,
+    //DateTime? updatedAt,
+  }) {
     return Quiz(
-      id: id,
+      id: id ?? this.id,
       title: title ?? this.title,
-      categoryId: categoryId,
+      categoryId: categoryId ?? this.categoryId,
       timeLimit: timeLimit ?? this.timeLimit,
       questions: questions ?? this.questions,
-      createdAt: createdAt,
-      updatedAt: DateTime.now(),
+      createdAt: DateTime.now(),
+      //updatedAt: updatedAt ?? DateTime.now(),
     );
   }
 }
